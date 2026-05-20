@@ -27,7 +27,7 @@ sed -i 's|../webfonts/|webfonts/|g' "$PUBLIC/all.css"
 
 # Copy Socket.io client from installed node_modules (most reliable)
 if [ -f "./node_modules/socket.io/client-dist/socket.io.min.js" ]; then
-  cp "./node_modules/socket.io/client-dist/socket.io.min.js" "$PUBLIC/socket.io.js"
+  cp "./node_modules/socket.io/client-dist/socket.io.min.js" "$PUBLIC/socket.io/socket.io.js"
   echo "✅  Socket.io client copied from node_modules."
 else
   echo "⚠️   node_modules not found yet — socket.io.js will be served dynamically by the server."
