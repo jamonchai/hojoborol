@@ -2614,7 +2614,7 @@
           socket = null;
         }
 
-        socket = io({ transports: ["websocket", "polling"] });
+        socket = io({ transports: ["polling"] });
 
         socket.on("connect", () => {
           socket.emit("auth", session.token);
