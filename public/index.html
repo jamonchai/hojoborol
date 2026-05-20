@@ -2006,19 +2006,19 @@
       }
 
       /* ══════════════════════════════════════
-   SESSION PERSISTENCE (sessionStorage = tab-only)
+   SESSION PERSISTENCE (localStorage = survives reload)
 ══════════════════════════════════════ */
       function saveSession(s) {
-        sessionStorage.setItem("nc_session", JSON.stringify(s));
+        localStorage.setItem("nc_session", JSON.stringify(s));
       }
 
       function clearSession() {
-        sessionStorage.removeItem("nc_session");
+        localStorage.removeItem("nc_session");
       }
 
       function loadSavedSession() {
         try {
-          const raw = sessionStorage.getItem("nc_session");
+          const raw = localStorage.getItem("nc_session");
           return raw ? JSON.parse(raw) : null;
         } catch (e) {
           return null;
