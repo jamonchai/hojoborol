@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: hojoborol
+    env: node
+    buildCommand: "npm install && bash setup.sh"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    disk:
+      name: hojoborol-data
+      mountPath: /var/data
+      sizeGB: 1
