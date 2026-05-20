@@ -1,0 +1,2927 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hojoborol</title>
+
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ═══════ DESIGN TOKENS ═══════ */
+      :root {
+        --bg-deep: #0a0f1e;
+        --bg-card: #111827;
+        --bg-surface: #1a2234;
+        --bg-input: #0f1729;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-active: rgba(59, 130, 246, 0.45);
+        --blue: #3b82f6;
+        --blue-dim: rgba(59, 130, 246, 0.15);
+        --blue-glow: rgba(59, 130, 246, 0.35);
+        --emerald: #10b981;
+        --emerald-dim: rgba(16, 185, 129, 0.15);
+        --rose: #f43f5e;
+        --rose-dim: rgba(244, 63, 94, 0.15);
+        --amber: #f59e0b;
+        --text-primary: #f0f4ff;
+        --text-secondary: #8899bb;
+        --text-muted: #4a5878;
+        --radius-lg: 16px;
+        --radius-md: 10px;
+        --radius-sm: 6px;
+        --shadow-card:
+          0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.04);
+        --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.2);
+        --font-display: "Space Mono", monospace;
+        --font-body: "DM Sans", sans-serif;
+        --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Light mode */
+      body.light {
+        --bg-deep: #f0f4f8;
+        --bg-card: #ffffff;
+        --bg-surface: #e8edf4;
+        --bg-input: #eef2f7;
+        --border: rgba(0, 0, 0, 0.1);
+        --border-active: rgba(37, 99, 235, 0.5);
+        --blue: #2563eb;
+        --blue-dim: rgba(37, 99, 235, 0.1);
+        --blue-glow: rgba(37, 99, 235, 0.25);
+        --emerald: #059669;
+        --emerald-dim: rgba(5, 150, 105, 0.12);
+        --rose: #e11d48;
+        --rose-dim: rgba(225, 29, 72, 0.1);
+        --amber: #d97706;
+        --text-primary: #0f172a;
+        --text-secondary: #334155;
+        --text-muted: #64748b;
+        --shadow-card:
+          0 8px 40px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.06);
+        --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.12);
+      }
+
+      /* Light mode component overrides */
+      body.light .alert-custom.error {
+        background: #fff1f2;
+        border-color: rgba(225, 29, 72, 0.3);
+        color: #9f1239;
+      }
+      body.light .alert-custom.success {
+        background: #f0fdf4;
+        border-color: rgba(5, 150, 105, 0.3);
+        color: #065f46;
+      }
+      body.light .alert-custom.warning {
+        background: #fffbeb;
+        border-color: rgba(217, 119, 6, 0.3);
+        color: #92400e;
+      }
+
+      body.light .badge-admin {
+        background: rgba(109, 40, 217, 0.08);
+        border-color: rgba(109, 40, 217, 0.25);
+        color: #5b21b6;
+      }
+      body.light .status-pending {
+        background: #fffbeb;
+        color: #92400e;
+        border-color: rgba(217, 119, 6, 0.3);
+      }
+      body.light .status-approved {
+        background: #f0fdf4;
+        color: #065f46;
+        border-color: rgba(5, 150, 105, 0.3);
+      }
+      body.light .status-rejected {
+        background: #fff1f2;
+        color: #9f1239;
+        border-color: rgba(225, 29, 72, 0.3);
+      }
+
+      body.light .avatar-blue {
+        background: rgba(37, 99, 235, 0.1);
+        color: #1d4ed8;
+        border-color: rgba(37, 99, 235, 0.2);
+      }
+      body.light .avatar-green {
+        background: rgba(5, 150, 105, 0.1);
+        color: #065f46;
+        border-color: rgba(5, 150, 105, 0.2);
+      }
+      body.light .avatar-rose {
+        background: rgba(225, 29, 72, 0.08);
+        color: #9f1239;
+        border-color: rgba(225, 29, 72, 0.2);
+      }
+      body.light .avatar-amber {
+        background: rgba(217, 119, 6, 0.1);
+        color: #92400e;
+        border-color: rgba(217, 119, 6, 0.2);
+      }
+
+      body.light .btn-approve {
+        border-color: rgba(5, 150, 105, 0.4);
+        color: #065f46;
+      }
+      body.light .btn-approve:hover {
+        background: rgba(5, 150, 105, 0.08);
+      }
+      body.light .btn-reject {
+        border-color: rgba(225, 29, 72, 0.4);
+        color: #9f1239;
+      }
+      body.light .btn-reject:hover {
+        background: rgba(225, 29, 72, 0.08);
+      }
+      body.light .btn-danger {
+        border-color: rgba(225, 29, 72, 0.4);
+        color: #9f1239;
+      }
+      body.light .btn-danger:hover {
+        background: rgba(225, 29, 72, 0.08);
+      }
+      body.light .btn-ghost {
+        color: #334155;
+      }
+      body.light .btn-ghost:hover {
+        color: #0f172a;
+        background: rgba(0, 0, 0, 0.04);
+      }
+
+      body.light #btn-admin-panel {
+        border-color: rgba(109, 40, 217, 0.3) !important;
+        color: #5b21b6 !important;
+      }
+      body.light #btn-admin-panel:hover {
+        background: rgba(109, 40, 217, 0.08) !important;
+      }
+
+      body.light .reaction-pill {
+        background: #f1f5f9;
+        border-color: rgba(0, 0, 0, 0.1);
+      }
+      body.light .reaction-pill:hover {
+        background: rgba(37, 99, 235, 0.08);
+        border-color: rgba(37, 99, 235, 0.3);
+      }
+      body.light .reaction-pill.mine {
+        background: rgba(37, 99, 235, 0.1);
+        border-color: rgba(37, 99, 235, 0.4);
+      }
+      body.light .reaction-count {
+        color: #334155;
+      }
+
+      body.light .msg-handle.self-name {
+        color: #1d4ed8;
+      }
+      body.light .reply-preview {
+        background: #f1f5f9;
+        border-left-color: rgba(37, 99, 235, 0.4);
+      }
+      body.light .reply-preview strong {
+        color: #334155;
+      }
+      body.light .reply-bar {
+        background: #f1f5f9;
+        border-top-color: rgba(0, 0, 0, 0.08);
+      }
+      body.light .reply-bar strong {
+        color: #0f172a;
+      }
+      body.light .reply-cancel:hover {
+        color: #e11d48;
+      }
+
+      body.light .tab-btn.active {
+        background: #ffffff;
+        color: #0f172a;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      }
+      body.light .tab-btn {
+        color: #64748b;
+      }
+
+      body.light .msg-action-btn:hover {
+        color: #0f172a;
+        background: #e8edf4;
+      }
+      body.light .modal-close:hover {
+        color: #0f172a;
+      }
+
+      body.light .date-divider span {
+        color: #64748b;
+      }
+      body.light .empty-state {
+        color: #64748b;
+      }
+      body.light .sidebar-label {
+        color: #64748b;
+      }
+      body.light .online-joined {
+        color: #64748b;
+      }
+
+      body.light .panel-title {
+        color: #0f172a;
+      }
+      body.light ::-webkit-scrollbar-thumb {
+        background: #cbd5e1;
+      }
+      body.light ::-webkit-scrollbar-thumb:hover {
+        background: #94a3b8;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: var(--bg-deep);
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 15px;
+        min-height: 100vh;
+        overflow-x: hidden;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      #app {
+        position: relative;
+        z-index: 1;
+      }
+
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--bg-surface);
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+      }
+
+      /* ═══════ TYPOGRAPHY ═══════ */
+      .brand {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        background: linear-gradient(
+          135deg,
+          #60a5fa 0%,
+          #a78bfa 60%,
+          #38bdf8 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .brand-sub {
+        font-size: 0.7rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        font-family: var(--font-display);
+        margin-top: -2px;
+      }
+
+      /* ═══════ VIEWS ═══════ */
+      .view {
+        display: none;
+      }
+      .view.active {
+        display: flex;
+      }
+
+      /* ═══════ AUTH VIEW ═══════ */
+      #view-auth {
+        min-height: 100vh;
+        align-items: center;
+        justify-content: center;
+        padding: 24px 16px;
+        flex-direction: column;
+      }
+
+      #view-auth::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(59, 130, 246, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(59, 130, 246, 0.04) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .auth-card {
+        width: 100%;
+        max-width: 440px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card), var(--shadow-glow);
+        padding: 40px 36px;
+        animation: slideUp 0.4s ease both;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .auth-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .auth-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, var(--blue), #7c3aed);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+        font-size: 22px;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+      }
+
+      .tab-bar {
+        display: flex;
+        background: var(--bg-input);
+        border-radius: var(--radius-md);
+        padding: 4px;
+        margin-bottom: 28px;
+      }
+
+      .tab-btn {
+        flex: 1;
+        border: none;
+        background: transparent;
+        color: var(--text-secondary);
+        padding: 9px 0;
+        border-radius: 8px;
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .tab-btn.active {
+        background: var(--bg-surface);
+        color: var(--text-primary);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 7px;
+      }
+
+      .form-control-custom {
+        width: 100%;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-primary);
+        padding: 10px 14px;
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .form-control-custom:focus {
+        border-color: var(--blue);
+        box-shadow: 0 0 0 3px var(--blue-glow);
+      }
+      .form-control-custom::placeholder {
+        color: var(--text-muted);
+      }
+
+      .btn-primary-custom {
+        width: 100%;
+        padding: 11px 20px;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        border: none;
+        border-radius: var(--radius-sm);
+        color: #fff;
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary-custom:hover {
+        background: linear-gradient(135deg, #1d4ed8, #2563eb);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px var(--blue-glow);
+      }
+      .btn-primary-custom:active {
+        transform: translateY(0);
+      }
+      .btn-primary-custom:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .alert-custom {
+        padding: 11px 14px;
+        border-radius: var(--radius-sm);
+        font-size: 0.88rem;
+        margin-bottom: 16px;
+        display: none;
+        animation: fadeIn 0.2s ease;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      .alert-custom.show {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      .alert-custom.error {
+        background: var(--rose-dim);
+        border: 1px solid rgba(244, 63, 94, 0.3);
+        color: #fda4af;
+      }
+      .alert-custom.success {
+        background: var(--emerald-dim);
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        color: #6ee7b7;
+      }
+      .alert-custom.warning {
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        color: #fcd34d;
+      }
+
+      /* ═══════ TOP BAR ═══════ */
+      #view-admin {
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      .top-bar {
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+      }
+
+      .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .top-bar-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      /* ═══════ THEME TOGGLE ═══════ */
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-sm);
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text-secondary);
+        cursor: pointer;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+      .theme-toggle:hover {
+        border-color: var(--border-active);
+        color: var(--text-primary);
+      }
+
+      .badge-custom {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .badge-admin {
+        background: rgba(124, 58, 237, 0.2);
+        border: 1px solid rgba(124, 58, 237, 0.4);
+        color: #c4b5fd;
+      }
+
+      .admin-body {
+        flex: 1;
+        padding: 28px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .panel-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+      .panel-header {
+        padding: 18px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .panel-title {
+        font-family: var(--font-display);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: var(--text-primary);
+      }
+      .panel-body {
+        padding: 0;
+      }
+
+      .user-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 22px;
+        border-bottom: 1px solid var(--border);
+        transition: var(--transition);
+        animation: slideUp 0.3s ease both;
+      }
+      .user-row:last-child {
+        border-bottom: none;
+      }
+      .user-row:hover {
+        background: rgba(255, 255, 255, 0.02);
+      }
+      .user-row-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.85rem;
+        flex-shrink: 0;
+      }
+      .avatar-blue {
+        background: var(--blue-dim);
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.2);
+      }
+      .avatar-green {
+        background: var(--emerald-dim);
+        color: #6ee7b7;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+      .avatar-rose {
+        background: var(--rose-dim);
+        color: #fda4af;
+        border: 1px solid rgba(244, 63, 94, 0.2);
+      }
+      .avatar-amber {
+        background: rgba(245, 158, 11, 0.12);
+        color: #fcd34d;
+        border: 1px solid rgba(245, 158, 11, 0.2);
+      }
+
+      .user-handle {
+        font-weight: 600;
+        font-size: 0.92rem;
+        color: var(--text-primary);
+      }
+      .user-status-label {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+      .action-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .btn-action {
+        padding: 6px 14px;
+        border: 1px solid;
+        border-radius: var(--radius-sm);
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        background: transparent;
+        font-family: var(--font-body);
+      }
+      .btn-approve {
+        border-color: rgba(16, 185, 129, 0.4);
+        color: var(--emerald);
+      }
+      .btn-approve:hover {
+        background: var(--emerald-dim);
+        transform: translateY(-1px);
+      }
+      .btn-reject {
+        border-color: rgba(244, 63, 94, 0.4);
+        color: var(--rose);
+      }
+      .btn-reject:hover {
+        background: var(--rose-dim);
+        transform: translateY(-1px);
+      }
+      .btn-danger {
+        border-color: rgba(244, 63, 94, 0.4);
+        color: var(--rose);
+        background: transparent;
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 500;
+        padding: 8px 14px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-danger:hover {
+        background: var(--rose-dim);
+        transform: translateY(-1px);
+      }
+
+      .btn-ghost {
+        padding: 8px 16px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-secondary);
+        font-family: var(--font-body);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .btn-ghost:hover {
+        border-color: var(--border-active);
+        color: var(--text-primary);
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 48px 24px;
+        color: var(--text-muted);
+      }
+      .empty-state i {
+        font-size: 2rem;
+        margin-bottom: 12px;
+        opacity: 0.4;
+        display: block;
+      }
+
+      .status-pill {
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        line-height: 1;
+      }
+      .status-pending {
+        background: rgba(245, 158, 11, 0.15);
+        color: #fcd34d;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+      }
+      .status-approved {
+        background: var(--emerald-dim);
+        color: #6ee7b7;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+      }
+      .status-rejected {
+        background: var(--rose-dim);
+        color: #fda4af;
+        border: 1px solid rgba(244, 63, 94, 0.3);
+      }
+
+      /* ═══════ CHAT VIEW ═══════ */
+      #view-chat {
+        height: 100vh;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .chat-layout {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 240px;
+        min-width: 240px;
+        background: var(--bg-card);
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .sidebar-header {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .online-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px 0;
+      }
+      .online-user {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 9px 18px;
+        transition: var(--transition);
+      }
+      .online-user:hover {
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .online-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--emerald);
+        flex-shrink: 0;
+        box-shadow: 0 0 6px var(--emerald);
+        animation: pulse 2s infinite;
+        margin-top: 4px;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .online-handle {
+        font-size: 0.88rem;
+        color: var(--text-secondary);
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .online-handle.self {
+        color: var(--text-primary);
+        font-weight: 600;
+      }
+      .online-joined {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        margin-top: 1px;
+      }
+
+      .sidebar-footer {
+        padding: 14px 18px;
+        border-top: 1px solid var(--border);
+      }
+
+      .chat-panel {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        background: var(--bg-deep);
+      }
+
+      .chat-header {
+        padding: 14px 22px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--bg-card);
+      }
+      .channel-name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+      }
+      .channel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--emerald);
+        box-shadow: 0 0 8px var(--emerald);
+        flex-shrink: 0;
+      }
+
+      .messages-container {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      /* ═══════ MESSAGE ROWS ═══════ */
+      .msg-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 5px 8px;
+        border-radius: var(--radius-sm);
+        animation: msgIn 0.22s ease both;
+        position: relative;
+      }
+
+      .msg-row:hover {
+        background: rgba(255, 255, 255, 0.025);
+      }
+      body.light .msg-row:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
+
+      .msg-row:hover .msg-actions {
+        opacity: 1;
+      }
+
+      @keyframes msgIn {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .msg-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.78rem;
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      .msg-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .msg-meta {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 3px;
+      }
+      .msg-handle {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+      .msg-handle.self-name {
+        color: #93c5fd;
+      }
+      .msg-time {
+        font-size: 0.72rem;
+        color: var(--text-muted);
+      }
+      .msg-text {
+        font-size: 0.92rem;
+        color: var(--text-secondary);
+        line-height: 1.55;
+        word-break: break-word;
+      }
+
+      /* Reply preview inside message */
+      .reply-preview {
+        background: var(--bg-surface);
+        border-left: 3px solid var(--blue);
+        border-radius: 0 6px 6px 0;
+        padding: 6px 10px;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+      .reply-preview:hover {
+        background: var(--blue-dim);
+      }
+      .reply-preview strong {
+        color: var(--text-secondary);
+      }
+
+      /* Reactions */
+      .msg-reactions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin-top: 5px;
+      }
+      .reaction-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        padding: 2px 8px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: var(--transition);
+        user-select: none;
+      }
+      .reaction-pill:hover {
+        border-color: var(--border-active);
+        background: var(--blue-dim);
+      }
+      .reaction-pill.mine {
+        border-color: rgba(59, 130, 246, 0.5);
+        background: var(--blue-dim);
+      }
+      .reaction-count {
+        color: var(--text-secondary);
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+
+      /* Message hover actions */
+      .msg-actions {
+        position: absolute;
+        right: 8px;
+        top: 4px;
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 3px 4px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .msg-action-btn {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        transition: var(--transition);
+      }
+      .msg-action-btn:hover {
+        color: var(--text-primary);
+        background: var(--bg-surface);
+      }
+
+      /* Emoji picker popup */
+      .emoji-picker {
+        position: absolute;
+        right: 8px;
+        top: 36px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 6px;
+        display: flex;
+        gap: 4px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        z-index: 50;
+        animation: fadeIn 0.15s ease;
+      }
+
+      .emoji-opt {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 1.2rem;
+        padding: 4px 5px;
+        border-radius: 6px;
+        transition: var(--transition);
+      }
+      .emoji-opt:hover {
+        background: var(--bg-surface);
+        transform: scale(1.2);
+      }
+
+      /* Reply bar */
+      .reply-bar {
+        display: none;
+        padding: 8px 22px;
+        background: var(--bg-card);
+        border-top: 1px solid var(--border);
+        align-items: center;
+        gap: 10px;
+        font-size: 0.83rem;
+        color: var(--text-secondary);
+        border-left: 3px solid var(--blue);
+      }
+
+      .reply-bar.visible {
+        display: flex;
+      }
+      .reply-bar-text {
+        flex: 1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .reply-bar strong {
+        color: var(--text-primary);
+      }
+      .reply-cancel {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 2px 6px;
+        border-radius: 4px;
+        transition: var(--transition);
+      }
+      .reply-cancel:hover {
+        color: var(--rose);
+      }
+
+      .date-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 14px 0;
+      }
+      .date-divider::before,
+      .date-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
+      .date-divider span {
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        padding: 2px 10px;
+      }
+
+      .chat-input-area {
+        padding: 16px 22px;
+        border-top: 1px solid var(--border);
+        background: var(--bg-card);
+      }
+
+      .input-row {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+        background: var(--bg-input);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px 14px;
+        transition: var(--transition);
+      }
+      .input-row:focus-within {
+        border-color: var(--border-active);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      #message-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        resize: none;
+        max-height: 120px;
+        line-height: 1.5;
+      }
+      #message-input::placeholder {
+        color: var(--text-muted);
+      }
+
+      .send-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 9px;
+        border: none;
+        background: linear-gradient(135deg, #2563eb, #3b82f6);
+        color: #fff;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: var(--transition);
+        font-size: 0.9rem;
+      }
+      .send-btn:hover {
+        transform: scale(1.08);
+        box-shadow: 0 4px 16px var(--blue-glow);
+      }
+      .send-btn:active {
+        transform: scale(0.96);
+      }
+
+      /* ═══════ MODAL ═══════ */
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(6px);
+        z-index: 500;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .modal-overlay.open {
+        display: flex;
+        animation: fadeIn 0.2s ease both;
+      }
+      .modal-box {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-card);
+        width: 100%;
+        max-width: 400px;
+        animation: slideUp 0.25s ease both;
+      }
+      .modal-header {
+        padding: 20px 24px 16px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .modal-title {
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+        font-weight: 700;
+      }
+      .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: var(--transition);
+        padding: 4px;
+      }
+      .modal-close:hover {
+        color: var(--text-primary);
+      }
+      .modal-body {
+        padding: 24px;
+      }
+
+      /* ═══════ TOAST ═══════ */
+      #toast-container {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        pointer-events: none;
+      }
+      .toast-item {
+        background: var(--bg-surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        padding: 12px 16px;
+        font-size: 0.88rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: toastIn 0.3s ease;
+        min-width: 240px;
+        max-width: 320px;
+      }
+      .toast-item.removing {
+        animation: toastOut 0.3s ease forwards;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes toastOut {
+        to {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+      }
+
+      /* ═══════ SPINNER ═══════ */
+      .spinner {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        vertical-align: middle;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ═══════ MOBILE ═══════ */
+      .sidebar-toggle {
+        display: none;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        color: var(--text-secondary);
+        padding: 7px 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 700px) {
+        .auth-card {
+          padding: 28px 20px;
+        }
+        .sidebar {
+          position: fixed;
+          left: -240px;
+          top: 0;
+          bottom: 0;
+          z-index: 200;
+          transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+        }
+        .sidebar.open {
+          left: 0;
+        }
+        .sidebar-overlay {
+          display: none;
+          position: fixed;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 199;
+          backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.open {
+          display: block;
+        }
+        .sidebar-toggle {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+        }
+        .admin-body {
+          padding: 16px 12px;
+        }
+        .top-bar {
+          padding: 12px 16px;
+        }
+        .chat-input-area {
+          padding: 12px 14px;
+        }
+        .messages-container {
+          padding: 14px 14px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .brand {
+          font-size: 1.3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- STATE 1: AUTH -->
+      <div id="view-auth" class="view active">
+        <div class="auth-card">
+          <div class="auth-header">
+            <div class="auth-icon">
+              <i class="fa-solid fa-bolt" style="color: #fff"></i>
+            </div>
+            <div class="brand">Hojoborol</div>
+            <div class="brand-sub">Encrypted · Real-Time · Private</div>
+          </div>
+
+          <div id="auth-alert" class="alert-custom"></div>
+
+          <div class="tab-bar">
+            <button
+              class="tab-btn active"
+              id="tab-login"
+              onclick="switchTab('login')"
+            >
+              Sign In
+            </button>
+            <button
+              class="tab-btn"
+              id="tab-register"
+              onclick="switchTab('register')"
+            >
+              Register
+            </button>
+          </div>
+
+          <div id="form-login">
+            <div class="form-group">
+              <label class="form-label">Handle</label>
+              <input
+                id="login-handle"
+                class="form-control-custom"
+                type="text"
+                placeholder="your_handle"
+                autocomplete="username"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input
+                id="login-password"
+                class="form-control-custom"
+                type="password"
+                placeholder="••••••••"
+                autocomplete="current-password"
+              />
+            </div>
+            <button
+              class="btn-primary-custom"
+              id="btn-login"
+              onclick="doLogin()"
+            >
+              <span id="login-btn-text">Sign In</span>
+            </button>
+          </div>
+
+          <div id="form-register" style="display: none">
+            <div class="form-group">
+              <label class="form-label">Choose a Handle</label>
+              <input
+                id="reg-handle"
+                class="form-control-custom"
+                type="text"
+                placeholder="cool_username"
+                autocomplete="username"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password</label>
+              <input
+                id="reg-password"
+                class="form-control-custom"
+                type="password"
+                placeholder="min 6 characters"
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Confirm Password</label>
+              <input
+                id="reg-confirm"
+                class="form-control-custom"
+                type="password"
+                placeholder="repeat password"
+                autocomplete="new-password"
+              />
+            </div>
+            <button
+              class="btn-primary-custom"
+              id="btn-register"
+              onclick="doRegister()"
+            >
+              <span id="register-btn-text">Create Account</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE 2: ADMIN VIEW -->
+      <div id="view-admin" class="view">
+        <div class="top-bar">
+          <div class="top-bar-left">
+            <span class="brand" style="font-size: 1.1rem">Hojoborol</span>
+            <span class="badge-custom badge-admin"
+              ><i
+                class="fa-solid fa-shield-halved"
+                style="font-size: 0.7rem"
+              ></i>
+              Admin</span
+            >
+          </div>
+          <div class="top-bar-right">
+            <span
+              style="font-size: 0.85rem; color: var(--text-muted)"
+              id="admin-handle-label"
+            ></span>
+            <button
+              class="theme-toggle"
+              onclick="toggleTheme()"
+              title="Toggle theme"
+            >
+              <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
+            <button
+              class="btn-ghost"
+              onclick="goToChat()"
+              style="font-size: 0.82rem; padding: 7px 12px"
+            >
+              <i class="fa-solid fa-comments"></i
+              ><span class="d-none d-sm-inline">Chat</span>
+            </button>
+            <button class="btn-ghost" onclick="doLogout()">
+              <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+          </div>
+        </div>
+
+        <div class="admin-body">
+          <!-- Clear Chat -->
+          <div class="panel-card">
+            <div class="panel-header">
+              <span class="panel-title"
+                ><i
+                  class="fa-solid fa-trash"
+                  style="color: var(--rose); margin-right: 8px"
+                ></i
+                >Chat Management</span
+              >
+            </div>
+            <div class="panel-body" style="padding: 18px 22px">
+              <p
+                style="
+                  font-size: 0.88rem;
+                  color: var(--text-secondary);
+                  margin-bottom: 14px;
+                "
+              >
+                Permanently delete all messages from the chat. This action
+                cannot be undone.
+              </p>
+              <button class="btn-danger" onclick="confirmClearChat()">
+                <i class="fa-solid fa-trash-can"></i> Clear All Messages
+              </button>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <span class="panel-title"
+                ><i
+                  class="fa-regular fa-clock"
+                  style="color: var(--amber); margin-right: 8px"
+                ></i
+                >Pending Approvals</span
+              >
+              <button
+                class="btn-ghost"
+                onclick="loadAdminData()"
+                style="font-size: 0.78rem; padding: 6px 12px"
+              >
+                <i class="fa-solid fa-rotate"></i> Refresh
+              </button>
+            </div>
+            <div class="panel-body" id="pending-list">
+              <div class="empty-state">
+                <i class="fa-regular fa-face-smile"></i>No pending users.
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-header">
+              <span class="panel-title"
+                ><i
+                  class="fa-solid fa-users"
+                  style="color: var(--blue); margin-right: 8px"
+                ></i
+                >All Users</span
+              >
+            </div>
+            <div class="panel-body" id="all-users-list">
+              <div class="empty-state">
+                <i class="fa-solid fa-user-slash"></i>No users found.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATE 3: CHAT VIEW -->
+      <div id="view-chat" class="view">
+        <div class="top-bar">
+          <div class="top-bar-left">
+            <button
+              class="sidebar-toggle"
+              id="sidebar-toggle-btn"
+              onclick="toggleSidebar()"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+            <span class="brand" style="font-size: 1.05rem">Hojoborol</span>
+          </div>
+          <div class="top-bar-right">
+            <button
+              class="theme-toggle"
+              onclick="toggleTheme()"
+              title="Toggle theme"
+            >
+              <i class="fa-solid fa-circle-half-stroke"></i>
+            </button>
+            <button
+              id="btn-admin-panel"
+              class="btn-ghost admin-only-btn"
+              style="
+                display: none;
+                font-size: 0.82rem;
+                padding: 7px 12px;
+                border-color: rgba(124, 58, 237, 0.4);
+                color: #c4b5fd;
+              "
+              onclick="enterAdminView()"
+              title="Admin Panel"
+            >
+              <i class="fa-solid fa-shield-halved"></i>
+              <span class="d-none d-sm-inline">Admin</span>
+            </button>
+            <button
+              class="btn-ghost"
+              style="font-size: 0.82rem; padding: 7px 12px"
+              onclick="openPasswordModal()"
+            >
+              <i class="fa-solid fa-key"></i>
+              <span class="d-none d-sm-inline">Settings</span>
+            </button>
+            <button class="btn-ghost" onclick="doLogout()">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span class="d-none d-sm-inline">Logout</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-layout">
+          <div
+            class="sidebar-overlay"
+            id="sidebar-overlay"
+            onclick="closeSidebar()"
+          ></div>
+
+          <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+              <div class="sidebar-label">
+                <i
+                  class="fa-solid fa-circle"
+                  style="
+                    color: var(--emerald);
+                    font-size: 0.5rem;
+                    margin-right: 6px;
+                    vertical-align: middle;
+                  "
+                ></i>
+                Online — <span id="online-count">0</span>
+              </div>
+            </div>
+            <div class="online-list" id="online-list"></div>
+            <div class="sidebar-footer">
+              <div
+                style="
+                  font-size: 0.78rem;
+                  color: var(--text-muted);
+                  text-align: center;
+                "
+              >
+                Signed in as
+                <span
+                  id="chat-my-handle"
+                  style="color: var(--text-secondary); font-weight: 600"
+                ></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-panel">
+            <div class="chat-header">
+              <div class="channel-dot"></div>
+              <span class="channel-name"># general</span>
+              <span
+                style="
+                  font-size: 0.8rem;
+                  color: var(--text-muted);
+                  margin-left: auto;
+                "
+              >
+                <i
+                  class="fa-solid fa-lock"
+                  style="font-size: 0.7rem; margin-right: 4px"
+                ></i
+                >End-to-end chat
+              </span>
+            </div>
+
+            <div class="messages-container" id="messages-container">
+              <div class="date-divider"><span>Today</span></div>
+            </div>
+
+            <!-- Reply bar -->
+            <div class="reply-bar" id="reply-bar">
+              <i
+                class="fa-solid fa-reply"
+                style="color: var(--blue); font-size: 0.85rem; flex-shrink: 0"
+              ></i>
+              <div class="reply-bar-text" id="reply-bar-text">
+                Replying to <strong id="reply-bar-handle"></strong>:
+                <span id="reply-bar-content"></span>
+              </div>
+              <button
+                class="reply-cancel"
+                onclick="cancelReply()"
+                title="Cancel reply"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <div class="chat-input-area">
+              <div class="input-row">
+                <textarea
+                  id="message-input"
+                  rows="1"
+                  placeholder="Message #general..."
+                  onkeydown="handleInputKey(event)"
+                  oninput="autoResize(this)"
+                ></textarea>
+                <button class="send-btn" onclick="sendMessage()">
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Change Password -->
+    <div
+      class="modal-overlay"
+      id="password-modal"
+      onclick="closePasswordModal(event)"
+    >
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title"
+            ><i
+              class="fa-solid fa-key"
+              style="color: var(--blue); margin-right: 8px"
+            ></i
+            >Change Password</span
+          >
+          <button class="modal-close" onclick="closePasswordModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div
+            id="modal-alert"
+            class="alert-custom"
+            style="margin-bottom: 16px"
+          ></div>
+          <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <input
+              id="cp-current"
+              class="form-control-custom"
+              type="password"
+              placeholder="Your current password"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <input
+              id="cp-new"
+              class="form-control-custom"
+              type="password"
+              placeholder="Min 6 characters"
+            />
+          </div>
+          <div class="form-group" style="margin-bottom: 0">
+            <label class="form-label">Confirm New</label>
+            <input
+              id="cp-confirm"
+              class="form-control-custom"
+              type="password"
+              placeholder="Repeat new password"
+            />
+          </div>
+          <button
+            class="btn-primary-custom"
+            style="margin-top: 20px"
+            onclick="changePassword()"
+          >
+            <span id="cp-btn-text">Update Password</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: Confirm Clear Chat -->
+    <div
+      class="modal-overlay"
+      id="clear-modal"
+      onclick="closeClearModal(event)"
+    >
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title"
+            ><i
+              class="fa-solid fa-triangle-exclamation"
+              style="color: var(--rose); margin-right: 8px"
+            ></i
+            >Clear Chat</span
+          >
+          <button class="modal-close" onclick="closeClearModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p
+            style="
+              color: var(--text-secondary);
+              font-size: 0.92rem;
+              margin-bottom: 20px;
+            "
+          >
+            This will permanently delete
+            <strong style="color: var(--text-primary)">all messages</strong> for
+            everyone. This cannot be undone.
+          </p>
+          <div style="display: flex; gap: 10px">
+            <button
+              class="btn-ghost"
+              style="flex: 1; justify-content: center"
+              onclick="closeClearModal()"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn-danger"
+              style="flex: 1; justify-content: center"
+              onclick="doClearChat()"
+            >
+              <i class="fa-solid fa-trash-can"></i> Yes, Clear
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal-overlay"
+      id="remove-user-modal"
+      onclick="closeRemoveModal(event)"
+    >
+      <div class="modal-box" onclick="event.stopPropagation()">
+        <div class="modal-header">
+          <span class="modal-title"
+            ><i
+              class="fa-solid fa-user-minus"
+              style="color: var(--rose); margin-right: 8px"
+            ></i
+            >Remove User</span
+          >
+          <button class="modal-close" onclick="closeRemoveModal()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p
+            style="
+              color: var(--text-secondary);
+              font-size: 0.92rem;
+              margin-bottom: 6px;
+            "
+          >
+            Remove
+            <strong
+              style="color: var(--text-primary)"
+              id="remove-user-label"
+            ></strong
+            >?
+          </p>
+          <p
+            style="
+              color: var(--text-muted);
+              font-size: 0.82rem;
+              margin-bottom: 20px;
+            "
+          >
+            Their account and all their messages will be permanently deleted.
+            They will be logged out immediately.
+          </p>
+          <div style="display: flex; gap: 10px">
+            <button
+              class="btn-ghost"
+              style="flex: 1; justify-content: center"
+              onclick="closeRemoveModal()"
+            >
+              Cancel
+            </button>
+            <button
+              class="btn-danger"
+              style="flex: 1; justify-content: center"
+              onclick="doRemoveUser()"
+            >
+              <i class="fa-solid fa-user-minus"></i> Yes, Remove
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="moment.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      /* ══════════════════════════════════════
+   STATE
+══════════════════════════════════════ */
+      let session = null;
+      let socket = null;
+      let lastMsgDate = null;
+      let replyingTo = null; // { id, handle, content }
+      let activeEmojiPicker = null; // currently open emoji picker msg id
+
+      const ALLOWED_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🔥"];
+
+      const avatarColors = [
+        ["#1d4ed8", "#93c5fd"],
+        ["#065f46", "#6ee7b7"],
+        ["#7c3aed", "#c4b5fd"],
+        ["#b45309", "#fcd34d"],
+        ["#be185d", "#f9a8d4"],
+        ["#0e7490", "#67e8f9"],
+      ];
+
+      function getAvatarStyle(handle) {
+        let n = 0;
+        for (let i = 0; i < handle.length; i++) n += handle.charCodeAt(i);
+        const [bg, fg] = avatarColors[n % avatarColors.length];
+        return `background:${bg}20;color:${fg};border:1px solid ${bg}60`;
+      }
+
+      function getInitial(handle) {
+        return handle.charAt(0).toUpperCase();
+      }
+
+      /* ══════════════════════════════════════
+   THEME
+══════════════════════════════════════ */
+      function applyTheme(theme) {
+        if (theme === "light") {
+          document.body.classList.add("light");
+        } else {
+          document.body.classList.remove("light");
+        }
+        sessionStorage.setItem("nc_theme", theme);
+      }
+
+      function toggleTheme() {
+        const current = document.body.classList.contains("light")
+          ? "light"
+          : "dark";
+        applyTheme(current === "light" ? "dark" : "light");
+      }
+
+      /* ══════════════════════════════════════
+   SESSION PERSISTENCE (sessionStorage = tab-only)
+══════════════════════════════════════ */
+      function saveSession(s) {
+        sessionStorage.setItem("nc_session", JSON.stringify(s));
+      }
+
+      function clearSession() {
+        sessionStorage.removeItem("nc_session");
+      }
+
+      function loadSavedSession() {
+        try {
+          const raw = sessionStorage.getItem("nc_session");
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      /* ══════════════════════════════════════
+   URL / ROUTING
+══════════════════════════════════════ */
+      function getPathView() {
+        const p = window.location.pathname;
+        if (p === "/chat") return "chat";
+        if (p === "/admin") return "admin";
+        return "auth";
+      }
+
+      function setPath(view) {
+        const map = {
+          "view-auth": "/",
+          "view-chat": "/chat",
+          "view-admin": "/admin",
+        };
+        const target = map[view] || "/";
+        if (window.location.pathname !== target) {
+          history.pushState({ view }, "", target);
+        }
+      }
+
+      /* ══════════════════════════════════════
+   VIEW SWITCHING
+══════════════════════════════════════ */
+      function showView(id) {
+        $(".view").removeClass("active");
+        $("#" + id).addClass("active");
+        setPath(id);
+      }
+
+      /* ══════════════════════════════════════
+   AUTH TABS
+══════════════════════════════════════ */
+      function switchTab(tab) {
+        clearAuthAlert();
+        if (tab === "login") {
+          $("#form-login").show();
+          $("#form-register").hide();
+          $("#tab-login").addClass("active");
+          $("#tab-register").removeClass("active");
+        } else {
+          $("#form-login").hide();
+          $("#form-register").show();
+          $("#tab-register").addClass("active");
+          $("#tab-login").removeClass("active");
+        }
+      }
+
+      function showAuthAlert(msg, type = "error") {
+        const el = $("#auth-alert");
+        const icons = {
+          error: "fa-circle-exclamation",
+          success: "fa-circle-check",
+          warning: "fa-triangle-exclamation",
+        };
+        el.attr("class", "alert-custom " + type + " show");
+        el.html(
+          `<i class="fa-solid ${icons[type] || "fa-circle-info"}"></i><span>${msg}</span>`,
+        );
+      }
+
+      function clearAuthAlert() {
+        $("#auth-alert").removeClass("show");
+      }
+
+      /* ══════════════════════════════════════
+   REGISTER
+══════════════════════════════════════ */
+      async function doRegister() {
+        clearAuthAlert();
+        const handle = $("#reg-handle").val().trim();
+        const password = $("#reg-password").val();
+        const confirm = $("#reg-confirm").val();
+        if (!handle || !password)
+          return showAuthAlert("Please fill in all fields.");
+        if (password !== confirm)
+          return showAuthAlert("Passwords do not match.");
+        const btn = $("#btn-register");
+        btn.prop("disabled", true);
+        $("#register-btn-text").html('<span class="spinner"></span>');
+        try {
+          const res = await fetch("/api/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ handle, password }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            showAuthAlert(data.error || "Registration failed.");
+          } else {
+            showAuthAlert(data.message, "success");
+            $("#reg-handle, #reg-password, #reg-confirm").val("");
+            setTimeout(() => switchTab("login"), 2200);
+          }
+        } catch (e) {
+          showAuthAlert("Network error. Please try again.");
+        } finally {
+          btn.prop("disabled", false);
+          $("#register-btn-text").text("Create Account");
+        }
+      }
+
+      /* ══════════════════════════════════════
+   LOGIN
+══════════════════════════════════════ */
+      async function doLogin() {
+        clearAuthAlert();
+        const handle = $("#login-handle").val().trim();
+        const password = $("#login-password").val();
+        if (!handle || !password)
+          return showAuthAlert("Please fill in all fields.");
+        const btn = $("#btn-login");
+        btn.prop("disabled", true);
+        $("#login-btn-text").html('<span class="spinner"></span>');
+        try {
+          const res = await fetch("/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ handle, password }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            showAuthAlert(data.error || "Login failed.");
+            return;
+          }
+          session = {
+            token: data.token,
+            handle: data.handle,
+            isAdmin: data.isAdmin,
+            joinedAt: data.joinedAt,
+          };
+          saveSession(session);
+          $("#login-handle, #login-password").val("");
+          if (data.isAdmin) {
+            enterAdminView();
+          } else {
+            enterChatView();
+          }
+        } catch (e) {
+          showAuthAlert("Network error. Please try again.");
+        } finally {
+          btn.prop("disabled", false);
+          $("#login-btn-text").text("Sign In");
+        }
+      }
+
+      /* ══════════════════════════════════════
+   LOGOUT
+══════════════════════════════════════ */
+      async function doLogout() {
+        if (socket) {
+          socket.disconnect();
+          socket = null;
+        }
+        if (session) {
+          try {
+            await fetch("/api/logout", {
+              method: "POST",
+              headers: { "x-session-token": session.token },
+            });
+          } catch (e) {}
+          session = null;
+        }
+        clearSession();
+        lastMsgDate = null;
+        replyingTo = null;
+        cancelReply();
+        $("#messages-container").html(
+          '<div class="date-divider"><span>Today</span></div>',
+        );
+        $("#online-list").empty();
+        showView("view-auth");
+        showToast("Signed out.", "info");
+      }
+
+      /* ══════════════════════════════════════
+   ADMIN VIEW
+══════════════════════════════════════ */
+      function enterAdminView() {
+        $("#admin-handle-label").text(session.handle);
+        showView("view-admin");
+        loadAdminData();
+        connectSocket();
+      }
+
+      function goToChat() {
+        enterChatView();
+      }
+
+      async function loadAdminData() {
+        await loadPendingUsers();
+        await loadAllUsers();
+      }
+
+      async function loadPendingUsers() {
+        try {
+          const res = await fetch("/api/admin/pending", {
+            headers: { "x-session-token": session.token },
+          });
+          const data = await res.json();
+          const el = $("#pending-list");
+          el.empty();
+          if (data.length === 0) {
+            el.html(
+              '<div class="empty-state"><i class="fa-regular fa-face-smile"></i>No pending users — all clear!</div>',
+            );
+            return;
+          }
+          data.forEach((u) => {
+            el.append(`
+        <div class="user-row" id="pending-row-${u.id}">
+          <div class="user-row-left">
+            <div class="avatar avatar-amber">${getInitial(u.handle)}</div>
+            <div>
+              <div class="user-handle">${escHtml(u.handle)}</div>
+              <div class="user-status-label">Awaiting approval</div>
+            </div>
+          </div>
+          <div class="action-group">
+            <button class="btn-action btn-approve" onclick="updateStatus(${u.id},'approved','${escHtml(u.handle)}')">
+              <i class="fa-solid fa-check" style="margin-right:5px"></i>Approve
+            </button>
+            <button class="btn-action btn-reject" onclick="updateStatus(${u.id},'rejected','${escHtml(u.handle)}')">
+              <i class="fa-solid fa-xmark" style="margin-right:5px"></i>Reject
+            </button>
+          </div>
+        </div>
+      `);
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      async function loadAllUsers() {
+        try {
+          const res = await fetch("/api/admin/users", {
+            headers: { "x-session-token": session.token },
+          });
+          const data = await res.json();
+          const el = $("#all-users-list");
+          el.empty();
+          if (data.length === 0) {
+            el.html(
+              '<div class="empty-state"><i class="fa-solid fa-user-slash"></i>No users found.</div>',
+            );
+            return;
+          }
+          data.forEach((u) => {
+            const statusPill = `<span class="status-pill status-${u.status}">${u.status}</span>`;
+            const avatarClass =
+              u.status === "approved"
+                ? "avatar-green"
+                : u.status === "rejected"
+                  ? "avatar-rose"
+                  : "avatar-amber";
+            el.append(`
+        <div class="user-row" id="user-row-${u.id}">
+          <div class="user-row-left">
+            <div class="avatar ${avatarClass}">${getInitial(u.handle)}</div>
+            <div>
+              <div class="user-handle">${escHtml(u.handle)}</div>
+              <div class="user-status-label">Registered user</div>
+            </div>
+          </div>
+          <div class="action-group">
+            ${statusPill}
+            <button class="btn-action btn-reject" onclick="confirmRemoveUser(${u.id},'${escHtml(u.handle)}')" title="Remove user" style="margin-left:8px">
+              <i class="fa-solid fa-user-minus" style="margin-right:5px"></i>Remove
+            </button>
+          </div>
+        </div>
+      `);
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      async function updateStatus(userId, status, handle) {
+        try {
+          const res = await fetch(`/api/admin/users/${userId}/status`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-session-token": session.token,
+            },
+            body: JSON.stringify({ status }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast(data.message, "success");
+            await loadAdminData();
+          } else showToast(data.error || "Error.", "error");
+        } catch (e) {
+          showToast("Network error.", "error");
+        }
+      }
+
+      let removeTargetId = null,
+        removeTargetHandle = null;
+
+      function confirmRemoveUser(userId, handle) {
+        removeTargetId = userId;
+        removeTargetHandle = handle;
+        $("#remove-user-label").text(handle);
+        $("#remove-user-modal").addClass("open");
+      }
+
+      function closeRemoveModal(e) {
+        if (e && e.target !== document.getElementById("remove-user-modal"))
+          return;
+        $("#remove-user-modal").removeClass("open");
+        removeTargetId = null;
+        removeTargetHandle = null;
+      }
+
+      async function doRemoveUser() {
+        if (!removeTargetId) return;
+        try {
+          const res = await fetch(`/api/admin/users/${removeTargetId}`, {
+            method: "DELETE",
+            headers: { "x-session-token": session.token },
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast(data.message, "success");
+            $("#remove-user-modal").removeClass("open");
+            removeTargetId = null;
+            removeTargetHandle = null;
+            await loadAdminData();
+          } else showToast(data.error || "Error.", "error");
+        } catch (e) {
+          showToast("Network error.", "error");
+        }
+      }
+
+      function confirmClearChat() {
+        $("#clear-modal").addClass("open");
+      }
+      function closeClearModal(e) {
+        if (e && e.target !== document.getElementById("clear-modal")) return;
+        $("#clear-modal").removeClass("open");
+      }
+
+      async function doClearChat() {
+        try {
+          const res = await fetch("/api/admin/clear-chat", {
+            method: "POST",
+            headers: { "x-session-token": session.token },
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast(data.message, "success");
+            $("#clear-modal").removeClass("open");
+          } else showToast(data.error || "Error.", "error");
+        } catch (e) {
+          showToast("Network error.", "error");
+        }
+      }
+
+      /* ══════════════════════════════════════
+   CHAT VIEW
+══════════════════════════════════════ */
+      function enterChatView() {
+        $("#chat-my-handle").text(session.handle);
+        // Show admin button only for admins
+        if (session && session.isAdmin) {
+          $("#btn-admin-panel").show();
+        } else {
+          $("#btn-admin-panel").hide();
+        }
+        showView("view-chat");
+        loadMessages();
+        connectSocket();
+      }
+
+      async function loadMessages() {
+        try {
+          const res = await fetch("/api/messages", {
+            headers: { "x-session-token": session.token },
+          });
+          const msgs = await res.json();
+          $("#messages-container").html(
+            '<div class="date-divider"><span>Today</span></div>',
+          );
+          lastMsgDate = null;
+          msgs.forEach((m) => renderMessage(m, false));
+          scrollToBottom(true);
+        } catch (e) {
+          console.error("Failed to load messages", e);
+        }
+      }
+
+      function renderMessage(msg, animate = true) {
+        const { id, handle, content, created_at, reply_preview, reactions } =
+          msg;
+        const ts = moment(created_at);
+        const day = ts.format("YYYY-MM-DD");
+
+        if (day !== lastMsgDate) {
+          lastMsgDate = day;
+          const label = ts.isSame(moment(), "day")
+            ? "Today"
+            : ts.format("MMMM D, YYYY");
+          $("#messages-container").append(
+            `<div class="date-divider"><span>${label}</span></div>`,
+          );
+        }
+
+        const isSelf = session && handle === session.handle;
+        const style = getAvatarStyle(handle);
+        const nameClass = isSelf ? "msg-handle self-name" : "msg-handle";
+        const anim = animate ? "" : 'style="animation:none"';
+
+        const replyHtml = reply_preview
+          ? `<div class="reply-preview" onclick="scrollToMessage(${id})">
+         <strong>${escHtml(reply_preview.handle)}</strong>: ${escHtml(reply_preview.content)}${reply_preview.content.length >= 80 ? "…" : ""}
+       </div>`
+          : "";
+
+        const reactionsHtml = buildReactionsHtml(id, reactions || {});
+
+        const row = `
+    <div class="msg-row" id="msg-${id}" data-id="${id}" ${anim}>
+      <div class="msg-avatar" style="${style}">${getInitial(handle)}</div>
+      <div class="msg-body">
+        <div class="msg-meta">
+          <span class="${nameClass}">${escHtml(handle)}</span>
+          <span class="msg-time">${ts.format("h:mm A")}</span>
+        </div>
+        ${replyHtml}
+        <div class="msg-text">${escHtml(content)}</div>
+        <div class="msg-reactions" id="reactions-${id}">${reactionsHtml}</div>
+      </div>
+      <div class="msg-actions">
+        <button class="msg-action-btn" title="React" onclick="toggleEmojiPicker(${id}, event)">
+          <i class="fa-regular fa-face-smile"></i>
+        </button>
+        <button class="msg-action-btn" title="Reply" onclick="setReply(${id}, '${escAttr(handle)}', '${escAttr(content)}')">
+          <i class="fa-solid fa-reply"></i>
+        </button>
+      </div>
+    </div>
+  `;
+        $("#messages-container").append(row);
+      }
+
+      function buildReactionsHtml(msgId, reactions) {
+        let html = "";
+        for (const [emoji, handles] of Object.entries(reactions)) {
+          if (!handles || handles.length === 0) continue;
+          const mine = session && handles.includes(session.handle);
+          const mineClass = mine ? " mine" : "";
+          const title = handles.join(", ");
+          html += `<span class="reaction-pill${mineClass}" title="${escHtml(title)}" onclick="sendReaction(${msgId}, '${emoji}')">
+      ${emoji} <span class="reaction-count">${handles.length}</span>
+    </span>`;
+        }
+        return html;
+      }
+
+      function updateReactions(msgId, reactions) {
+        const el = document.getElementById("reactions-" + msgId);
+        if (el) el.innerHTML = buildReactionsHtml(msgId, reactions);
+      }
+
+      /* ══════════════════════════════════════
+   REPLY
+══════════════════════════════════════ */
+      function setReply(id, handle, content) {
+        replyingTo = { id, handle, content };
+        $("#reply-bar-handle").text(handle);
+        $("#reply-bar-content").text(
+          content.length > 60 ? content.substring(0, 60) + "…" : content,
+        );
+        $("#reply-bar").addClass("visible");
+        $("#message-input").focus();
+        closeEmojiPicker();
+      }
+
+      function cancelReply() {
+        replyingTo = null;
+        $("#reply-bar").removeClass("visible");
+      }
+
+      /* ══════════════════════════════════════
+   EMOJI PICKER
+══════════════════════════════════════ */
+      function toggleEmojiPicker(msgId, e) {
+        e.stopPropagation();
+        const existing = document.getElementById("emoji-picker-" + msgId);
+        if (existing) {
+          closeEmojiPicker();
+          return;
+        }
+        closeEmojiPicker();
+
+        const btnRow = document.querySelector(`#msg-${msgId} .msg-actions`);
+        if (!btnRow) return;
+
+        const picker = document.createElement("div");
+        picker.className = "emoji-picker";
+        picker.id = "emoji-picker-" + msgId;
+
+        ALLOWED_EMOJIS.forEach((emoji) => {
+          const btn = document.createElement("button");
+          btn.className = "emoji-opt";
+          btn.textContent = emoji;
+          btn.onclick = (ev) => {
+            ev.stopPropagation();
+            sendReaction(msgId, emoji);
+            closeEmojiPicker();
+          };
+          picker.appendChild(btn);
+        });
+
+        btnRow.parentElement.appendChild(picker);
+        activeEmojiPicker = msgId;
+      }
+
+      function closeEmojiPicker() {
+        if (activeEmojiPicker !== null) {
+          const el = document.getElementById(
+            "emoji-picker-" + activeEmojiPicker,
+          );
+          if (el) el.remove();
+          activeEmojiPicker = null;
+        }
+      }
+
+      function sendReaction(msgId, emoji) {
+        if (!socket) return;
+        socket.emit("chat:react", { messageId: msgId, emoji });
+      }
+
+      function scrollToMessage(id) {
+        const el = document.getElementById("msg-" + id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "center" });
+          el.style.background = "rgba(59,130,246,0.1)";
+          setTimeout(() => (el.style.background = ""), 1000);
+        }
+      }
+
+      function scrollToBottom(force = false) {
+        const el = document.getElementById("messages-container");
+        if (!el) return;
+        const threshold = 120;
+        const isNearBottom =
+          el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
+        if (isNearBottom || force) el.scrollTop = el.scrollHeight;
+      }
+
+      function sendMessage() {
+        const input = $("#message-input");
+        const text = input.val().trim();
+        if (!text || !socket) return;
+        socket.emit("chat:message", {
+          content: text,
+          replyTo: replyingTo ? replyingTo.id : null,
+        });
+        input.val("").css("height", "auto");
+        cancelReply();
+      }
+
+      function handleInputKey(e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+        if (e.key === "Escape") cancelReply();
+      }
+
+      function autoResize(el) {
+        el.style.height = "auto";
+        el.style.height = Math.min(el.scrollHeight, 120) + "px";
+      }
+
+      /* ══════════════════════════════════════
+   SOCKET.IO
+══════════════════════════════════════ */
+      function connectSocket() {
+        if (socket) {
+          socket.disconnect();
+          socket = null;
+        }
+
+        socket = io({ transports: ["websocket", "polling"] });
+
+        socket.on("connect", () => {
+          socket.emit("auth", session.token);
+        });
+
+        socket.on("auth:ok", (data) => {
+          console.log("[Socket] Authenticated as", data.handle);
+        });
+
+        socket.on("auth:error", (msg) => {
+          showToast(msg, "error");
+          doLogout();
+        });
+
+        socket.on("chat:message", (msg) => {
+          renderMessage(msg, true);
+          scrollToBottom();
+        });
+
+        socket.on("chat:reactions_updated", ({ messageId, reactions }) => {
+          updateReactions(messageId, reactions);
+        });
+
+        socket.on("chat:cleared", ({ by }) => {
+          lastMsgDate = null;
+          $("#messages-container").html(
+            '<div class="date-divider"><span>Today</span></div>',
+          );
+          showToast(`Chat was cleared by ${by}.`, "info");
+        });
+
+        socket.on("users:online", (users) => {
+          updateOnlineList(users);
+        });
+
+        socket.on("admin:user_status_changed", () => {
+          if (session && session.isAdmin) loadAdminData();
+        });
+
+        socket.on("admin:user_removed", ({ handle }) => {
+          // If the removed user is the current session, force logout
+          if (session && session.handle === handle) {
+            showToast("Your account has been removed by an admin.", "error");
+            setTimeout(() => {
+              clearSession();
+              session = null;
+              showView("view-auth");
+            }, 2000);
+            return;
+          }
+          if (session && session.isAdmin) loadAdminData();
+        });
+
+        socket.on("disconnect", () => {
+          console.log("[Socket] Disconnected");
+        });
+
+        socket.on("error", (msg) => {
+          showToast(msg, "error");
+        });
+      }
+
+      function updateOnlineList(users) {
+        $("#online-count").text(users.length);
+        const el = $("#online-list");
+        el.empty();
+        users
+          .sort((a, b) => a.handle.localeCompare(b.handle))
+          .forEach((u) => {
+            const isSelf = session && u.handle === session.handle;
+            const cls = isSelf ? "online-handle self" : "online-handle";
+            const youLabel = isSelf
+              ? ' <span style="color:var(--text-muted);font-weight:400;font-size:0.75rem">(you)</span>'
+              : "";
+            const joinTime = u.joinedAt
+              ? moment(u.joinedAt).format("h:mm A")
+              : "";
+            el.append(`
+      <div class="online-user">
+        <div class="online-dot"></div>
+        <div>
+          <div class="${cls}">${escHtml(u.handle)}${youLabel}</div>
+          ${joinTime ? `<div class="online-joined"><i class="fa-regular fa-clock" style="font-size:0.65rem;margin-right:3px"></i>Joined ${joinTime}</div>` : ""}
+        </div>
+      </div>
+    `);
+          });
+      }
+
+      /* ══════════════════════════════════════
+   PASSWORD CHANGE
+══════════════════════════════════════ */
+      function openPasswordModal() {
+        $("#cp-current, #cp-new, #cp-confirm").val("");
+        $("#modal-alert").removeClass("show");
+        $("#password-modal").addClass("open");
+      }
+
+      function closePasswordModal(e) {
+        if (e && e.target !== document.getElementById("password-modal")) return;
+        $("#password-modal").removeClass("open");
+      }
+
+      async function changePassword() {
+        const current = $("#cp-current").val(),
+          newPwd = $("#cp-new").val(),
+          confirm = $("#cp-confirm").val();
+        const alertEl = $("#modal-alert");
+        alertEl.removeClass("show");
+        if (!current || !newPwd || !confirm) {
+          alertEl
+            .attr("class", "alert-custom error show")
+            .html(
+              '<i class="fa-solid fa-circle-exclamation"></i><span>All fields are required.</span>',
+            );
+          return;
+        }
+        if (newPwd !== confirm) {
+          alertEl
+            .attr("class", "alert-custom error show")
+            .html(
+              '<i class="fa-solid fa-circle-exclamation"></i><span>Passwords do not match.</span>',
+            );
+          return;
+        }
+        const btn = $("#password-modal .btn-primary-custom");
+        btn.prop("disabled", true);
+        $("#cp-btn-text").html('<span class="spinner"></span>');
+        try {
+          const res = await fetch("/api/change-password", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-session-token": session.token,
+            },
+            body: JSON.stringify({
+              currentPassword: current,
+              newPassword: newPwd,
+            }),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            alertEl
+              .attr("class", "alert-custom success show")
+              .html(
+                '<i class="fa-solid fa-circle-check"></i><span>' +
+                  data.message +
+                  "</span>",
+              );
+            $("#cp-current, #cp-new, #cp-confirm").val("");
+            setTimeout(() => $("#password-modal").removeClass("open"), 1800);
+          } else
+            alertEl
+              .attr("class", "alert-custom error show")
+              .html(
+                '<i class="fa-solid fa-circle-exclamation"></i><span>' +
+                  (data.error || "Error.") +
+                  "</span>",
+              );
+        } catch (e) {
+          alertEl
+            .attr("class", "alert-custom error show")
+            .html(
+              '<i class="fa-solid fa-circle-exclamation"></i><span>Network error.</span>',
+            );
+        } finally {
+          btn.prop("disabled", false);
+          $("#cp-btn-text").text("Update Password");
+        }
+      }
+
+      /* ══════════════════════════════════════
+   MOBILE SIDEBAR
+══════════════════════════════════════ */
+      function toggleSidebar() {
+        $("#sidebar").toggleClass("open");
+        $("#sidebar-overlay").toggleClass("open");
+      }
+      function closeSidebar() {
+        $("#sidebar").removeClass("open");
+        $("#sidebar-overlay").removeClass("open");
+      }
+
+      /* ══════════════════════════════════════
+   TOAST
+══════════════════════════════════════ */
+      function showToast(msg, type = "info") {
+        const icons = {
+          success: "fa-circle-check",
+          error: "fa-circle-exclamation",
+          info: "fa-circle-info",
+        };
+        const colors = {
+          success: "var(--emerald)",
+          error: "var(--rose)",
+          info: "var(--blue)",
+        };
+        const id = "toast-" + Date.now();
+        const el = $(
+          `<div class="toast-item" id="${id}"><i class="fa-solid ${icons[type] || "fa-circle-info"}" style="color:${colors[type] || colors.info};font-size:0.95rem;flex-shrink:0"></i><span>${escHtml(msg)}</span></div>`,
+        );
+        $("#toast-container").append(el);
+        setTimeout(() => {
+          el.addClass("removing");
+          setTimeout(() => el.remove(), 300);
+        }, 3500);
+      }
+
+      /* ══════════════════════════════════════
+   UTILS
+══════════════════════════════════════ */
+      function escHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+      function escAttr(str) {
+        return String(str)
+          .replace(/'/g, "\\'")
+          .replace(/\n/g, " ")
+          .substring(0, 60);
+      }
+
+      /* ══════════════════════════════════════
+   KEYBOARD SHORTCUTS
+══════════════════════════════════════ */
+      $(document).on("keydown", function (e) {
+        if (e.key === "Escape") {
+          $("#password-modal").removeClass("open");
+          $("#clear-modal").removeClass("open");
+          closeSidebar();
+          closeEmojiPicker();
+          cancelReply();
+        }
+        if (e.key === "Enter") {
+          const activeView = $(".view.active").attr("id");
+          if (activeView === "view-auth") {
+            const activeTab = $("#tab-login").hasClass("active")
+              ? "login"
+              : "register";
+            if (activeTab === "login") doLogin();
+            else doRegister();
+          }
+        }
+      });
+
+      // Close emoji picker on outside click
+      $(document).on("click", function (e) {
+        if (activeEmojiPicker !== null) {
+          const picker = document.getElementById(
+            "emoji-picker-" + activeEmojiPicker,
+          );
+          if (picker && !picker.contains(e.target)) closeEmojiPicker();
+        }
+      });
+
+      // Handle browser back/forward
+      window.addEventListener("popstate", function (e) {
+        if (!session) {
+          showView("view-auth");
+          return;
+        }
+        const pathView = getPathView();
+        if (pathView === "admin" && session.isAdmin) {
+          enterAdminView();
+        } else if (pathView === "chat") {
+          enterChatView();
+        } else {
+          showView("view-auth");
+        }
+      });
+
+      /* ══════════════════════════════════════
+   INIT — restore session on page load
+══════════════════════════════════════ */
+      $(document).ready(function () {
+        // Apply saved theme
+        const savedTheme = sessionStorage.getItem("nc_theme") || "dark";
+        applyTheme(savedTheme);
+
+        // Try to restore session (tab-scoped via sessionStorage)
+        const saved = loadSavedSession();
+        if (saved && saved.token) {
+          session = saved;
+          const pathView = getPathView();
+          if (pathView === "admin" && session.isAdmin) {
+            enterAdminView();
+          } else if (pathView === "chat") {
+            enterChatView();
+          } else if (pathView === "auth") {
+            if (session.isAdmin) {
+              enterAdminView();
+            } else {
+              enterChatView();
+            }
+          } else {
+            showView("view-auth");
+            $("#login-handle").focus();
+          }
+        } else {
+          showView("view-auth");
+          $("#login-handle").focus();
+        }
+      });
+    </script>
+  </body>
+</html>
