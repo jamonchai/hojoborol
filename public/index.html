@@ -2,7 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#0a0f1e" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Hojoborol</title>
 
     <link rel="stylesheet" href="bootstrap.min.css" />
@@ -42,9 +48,15 @@
         --font-display: "Space Mono", monospace;
         --font-body: "DM Sans", sans-serif;
         --transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        --topbar-height: 56px;
+        --input-area-height: 72px;
+        --safe-bottom: env(safe-area-inset-bottom, 0px);
+        --safe-left: env(safe-area-inset-left, 0px);
+        --safe-right: env(safe-area-inset-right, 0px);
+        --safe-top: env(safe-area-inset-top, 0px);
       }
 
-      /* Light mode */
+      /* ═══════ LIGHT MODE ═══════ */
       body.light {
         --bg-deep: #f0f4f8;
         --bg-card: #ffffff;
@@ -84,7 +96,6 @@
         border-color: rgba(217, 119, 6, 0.3);
         color: #92400e;
       }
-
       body.light .badge-admin {
         background: rgba(109, 40, 217, 0.08);
         border-color: rgba(109, 40, 217, 0.25);
@@ -105,7 +116,6 @@
         color: #9f1239;
         border-color: rgba(225, 29, 72, 0.3);
       }
-
       body.light .avatar-blue {
         background: rgba(37, 99, 235, 0.1);
         color: #1d4ed8;
@@ -126,7 +136,6 @@
         color: #92400e;
         border-color: rgba(217, 119, 6, 0.2);
       }
-
       body.light .btn-approve {
         border-color: rgba(5, 150, 105, 0.4);
         color: #065f46;
@@ -155,7 +164,6 @@
         color: #0f172a;
         background: rgba(0, 0, 0, 0.04);
       }
-
       body.light #btn-admin-panel {
         border-color: rgba(109, 40, 217, 0.3) !important;
         color: #5b21b6 !important;
@@ -163,7 +171,6 @@
       body.light #btn-admin-panel:hover {
         background: rgba(109, 40, 217, 0.08) !important;
       }
-
       body.light .reaction-pill {
         background: #f1f5f9;
         border-color: rgba(0, 0, 0, 0.1);
@@ -179,7 +186,6 @@
       body.light .reaction-count {
         color: #334155;
       }
-
       body.light .msg-handle.self-name {
         color: #1d4ed8;
       }
@@ -200,7 +206,6 @@
       body.light .reply-cancel:hover {
         color: #e11d48;
       }
-
       body.light .tab-btn.active {
         background: #ffffff;
         color: #0f172a;
@@ -209,7 +214,6 @@
       body.light .tab-btn {
         color: #64748b;
       }
-
       body.light .msg-action-btn:hover {
         color: #0f172a;
         background: #e8edf4;
@@ -217,7 +221,6 @@
       body.light .modal-close:hover {
         color: #0f172a;
       }
-
       body.light .date-divider span {
         color: #64748b;
       }
@@ -230,7 +233,6 @@
       body.light .online-joined {
         color: #64748b;
       }
-
       body.light .panel-title {
         color: #0f172a;
       }
@@ -240,11 +242,21 @@
       body.light ::-webkit-scrollbar-thumb:hover {
         background: #94a3b8;
       }
+      body.light .msg-row:hover {
+        background: rgba(0, 0, 0, 0.03);
+      }
 
+      /* ═══════ RESET & BASE ═══════ */
       *,
       *::before,
       *::after {
         box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      html {
+        height: 100%;
+        height: -webkit-fill-available;
       }
 
       body {
@@ -253,10 +265,13 @@
         font-family: var(--font-body);
         font-size: 15px;
         min-height: 100vh;
+        min-height: -webkit-fill-available;
         overflow-x: hidden;
         transition:
           background 0.3s ease,
           color 0.3s ease;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
 
       body::before {
@@ -274,7 +289,7 @@
       }
 
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 4px;
       }
       ::-webkit-scrollbar-track {
         background: transparent;
@@ -287,10 +302,19 @@
         background: var(--text-muted);
       }
 
+      /* Prevent double-tap zoom on buttons */
+      button,
+      input,
+      textarea,
+      select {
+        touch-action: manipulation;
+        font-family: var(--font-body);
+      }
+
       /* ═══════ TYPOGRAPHY ═══════ */
       .brand {
         font-family: var(--font-display);
-        font-size: 1.6rem;
+        font-size: clamp(1.1rem, 4vw, 1.6rem);
         font-weight: 700;
         letter-spacing: -0.03em;
         background: linear-gradient(
@@ -302,11 +326,12 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        white-space: nowrap;
       }
 
       .brand-sub {
-        font-size: 0.7rem;
-        letter-spacing: 0.18em;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
         text-transform: uppercase;
         color: var(--text-muted);
         font-family: var(--font-display);
@@ -324,9 +349,10 @@
       /* ═══════ AUTH VIEW ═══════ */
       #view-auth {
         min-height: 100vh;
+        min-height: -webkit-fill-available;
         align-items: center;
         justify-content: center;
-        padding: 24px 16px;
+        padding: clamp(16px, 5vw, 24px);
         flex-direction: column;
       }
 
@@ -349,7 +375,7 @@
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
         box-shadow: var(--shadow-card), var(--shadow-glow);
-        padding: 40px 36px;
+        padding: clamp(24px, 6vw, 40px) clamp(20px, 6vw, 36px);
         animation: slideUp 0.4s ease both;
       }
 
@@ -366,19 +392,21 @@
 
       .auth-header {
         text-align: center;
-        margin-bottom: 32px;
+        margin-bottom: clamp(20px, 5vw, 32px);
       }
+
       .auth-icon {
-        width: 56px;
-        height: 56px;
+        width: 52px;
+        height: 52px;
         background: linear-gradient(135deg, var(--blue), #7c3aed);
         border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 16px;
-        font-size: 22px;
+        margin: 0 auto 14px;
+        font-size: 20px;
         box-shadow: 0 8px 24px rgba(59, 130, 246, 0.35);
+        flex-shrink: 0;
       }
 
       .tab-bar {
@@ -386,7 +414,7 @@
         background: var(--bg-input);
         border-radius: var(--radius-md);
         padding: 4px;
-        margin-bottom: 28px;
+        margin-bottom: clamp(20px, 5vw, 28px);
       }
 
       .tab-btn {
@@ -394,13 +422,13 @@
         border: none;
         background: transparent;
         color: var(--text-secondary);
-        padding: 9px 0;
+        padding: 10px 0;
         border-radius: 8px;
-        font-family: var(--font-body);
         font-weight: 500;
         font-size: 0.9rem;
         cursor: pointer;
         transition: var(--transition);
+        min-height: 44px;
       }
 
       .tab-btn.active {
@@ -410,16 +438,17 @@
       }
 
       .form-group {
-        margin-bottom: 16px;
+        margin-bottom: 14px;
       }
+
       .form-label {
         display: block;
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 600;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         color: var(--text-secondary);
-        margin-bottom: 7px;
+        margin-bottom: 6px;
       }
 
       .form-control-custom {
@@ -428,11 +457,11 @@
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
         color: var(--text-primary);
-        padding: 10px 14px;
-        font-family: var(--font-body);
-        font-size: 0.95rem;
+        padding: 12px 14px;
+        font-size: 1rem;
         outline: none;
         transition: var(--transition);
+        min-height: 44px;
       }
 
       .form-control-custom:focus {
@@ -445,18 +474,18 @@
 
       .btn-primary-custom {
         width: 100%;
-        padding: 11px 20px;
+        padding: 13px 20px;
         background: linear-gradient(135deg, #2563eb, #3b82f6);
         border: none;
         border-radius: var(--radius-sm);
         color: #fff;
-        font-family: var(--font-body);
         font-weight: 600;
         font-size: 0.95rem;
         cursor: pointer;
         transition: var(--transition);
         position: relative;
         overflow: hidden;
+        min-height: 46px;
       }
 
       .btn-primary-custom:hover {
@@ -477,7 +506,7 @@
         padding: 11px 14px;
         border-radius: var(--radius-sm);
         font-size: 0.88rem;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         display: none;
         animation: fadeIn 0.2s ease;
       }
@@ -511,15 +540,11 @@
       }
 
       /* ═══════ TOP BAR ═══════ */
-      #view-admin {
-        min-height: 100vh;
-        flex-direction: column;
-      }
-
       .top-bar {
         background: var(--bg-card);
         border-bottom: 1px solid var(--border);
-        padding: 14px 24px;
+        padding: 0 clamp(12px, 3vw, 24px);
+        height: var(--topbar-height);
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -527,23 +552,37 @@
         top: 0;
         z-index: 100;
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        flex-shrink: 0;
+        padding-left: max(clamp(12px, 3vw, 24px), var(--safe-left));
+        padding-right: max(clamp(12px, 3vw, 24px), var(--safe-right));
       }
 
       .top-bar-left {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: clamp(8px, 2vw, 16px);
+        min-width: 0;
+        flex: 1;
       }
       .top-bar-right {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: clamp(6px, 1.5vw, 10px);
+        flex-shrink: 0;
+      }
+
+      /* ═══════ ADMIN VIEW ═══════ */
+      #view-admin {
+        min-height: 100vh;
+        flex-direction: column;
       }
 
       /* ═══════ THEME TOGGLE ═══════ */
       .theme-toggle {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
         border-radius: var(--radius-sm);
         background: transparent;
         border: 1px solid var(--border);
@@ -564,10 +603,11 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        padding: 3px 10px;
+        padding: 3px 9px;
         border-radius: 100px;
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         font-weight: 600;
+        white-space: nowrap;
       }
       .badge-admin {
         background: rgba(124, 58, 237, 0.2);
@@ -577,7 +617,7 @@
 
       .admin-body {
         flex: 1;
-        padding: 28px 24px;
+        padding: clamp(14px, 3vw, 28px) clamp(12px, 3vw, 24px);
         max-width: 1100px;
         margin: 0 auto;
         width: 100%;
@@ -588,14 +628,16 @@
         border: 1px solid var(--border);
         border-radius: var(--radius-lg);
         overflow: hidden;
-        margin-bottom: 24px;
+        margin-bottom: clamp(16px, 3vw, 24px);
       }
       .panel-header {
-        padding: 18px 22px;
+        padding: clamp(14px, 2.5vw, 18px) clamp(16px, 3vw, 22px);
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
       }
       .panel-title {
         font-family: var(--font-display);
@@ -612,10 +654,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 14px 22px;
+        padding: clamp(12px, 2vw, 14px) clamp(16px, 3vw, 22px);
         border-bottom: 1px solid var(--border);
         transition: var(--transition);
         animation: slideUp 0.3s ease both;
+        gap: 10px;
+        flex-wrap: wrap;
       }
       .user-row:last-child {
         border-bottom: none;
@@ -626,12 +670,15 @@
       .user-row-left {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
+        min-width: 0;
+        flex: 1;
       }
 
       .avatar {
         width: 36px;
         height: 36px;
+        min-width: 36px;
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -663,30 +710,35 @@
 
       .user-handle {
         font-weight: 600;
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         color: var(--text-primary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .user-status-label {
-        font-size: 0.75rem;
+        font-size: 0.73rem;
         color: var(--text-muted);
       }
       .action-group {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 6px;
         flex-shrink: 0;
+        flex-wrap: wrap;
       }
 
       .btn-action {
-        padding: 6px 14px;
+        padding: 7px 12px;
         border: 1px solid;
         border-radius: var(--radius-sm);
-        font-size: 0.8rem;
+        font-size: 0.78rem;
         font-weight: 600;
         cursor: pointer;
         transition: var(--transition);
         background: transparent;
-        font-family: var(--font-body);
+        min-height: 36px;
+        white-space: nowrap;
       }
       .btn-approve {
         border-color: rgba(16, 185, 129, 0.4);
@@ -704,20 +756,21 @@
         background: var(--rose-dim);
         transform: translateY(-1px);
       }
+
       .btn-danger {
-        border-color: rgba(244, 63, 94, 0.4);
+        border: 1px solid rgba(244, 63, 94, 0.4);
         color: var(--rose);
         background: transparent;
-        font-family: var(--font-body);
         font-size: 0.85rem;
         font-weight: 500;
-        padding: 8px 14px;
+        padding: 9px 14px;
         border-radius: var(--radius-sm);
         cursor: pointer;
         transition: var(--transition);
-        display: flex;
+        display: inline-flex;
         align-items: center;
         gap: 6px;
+        min-height: 40px;
       }
       .btn-danger:hover {
         background: var(--rose-dim);
@@ -725,19 +778,20 @@
       }
 
       .btn-ghost {
-        padding: 8px 16px;
+        padding: 8px 14px;
         background: transparent;
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
         color: var(--text-secondary);
-        font-family: var(--font-body);
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         font-weight: 500;
         cursor: pointer;
         transition: var(--transition);
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
+        white-space: nowrap;
+        min-height: 36px;
       }
       .btn-ghost:hover {
         border-color: var(--border-active);
@@ -746,24 +800,25 @@
 
       .empty-state {
         text-align: center;
-        padding: 48px 24px;
+        padding: clamp(32px, 6vw, 48px) 24px;
         color: var(--text-muted);
       }
       .empty-state i {
-        font-size: 2rem;
-        margin-bottom: 12px;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
         opacity: 0.4;
         display: block;
       }
 
       .status-pill {
-        padding: 3px 10px;
+        padding: 3px 9px;
         border-radius: 100px;
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
         display: inline-flex;
         align-items: center;
         line-height: 1;
+        white-space: nowrap;
       }
       .status-pending {
         background: rgba(245, 158, 11, 0.15);
@@ -781,33 +836,39 @@
         border: 1px solid rgba(244, 63, 94, 0.3);
       }
 
-      /* ═══════ CHAT VIEW ═══════ */
+      /* ═══════ CHAT VIEW — STICKY INPUT LAYOUT ═══════ */
       #view-chat {
         height: 100vh;
+        height: 100dvh; /* dynamic viewport for mobile */
         flex-direction: column;
         overflow: hidden;
       }
+
       .chat-layout {
         flex: 1;
         display: flex;
         overflow: hidden;
+        min-height: 0;
       }
 
+      /* ═══════ SIDEBAR ═══════ */
       .sidebar {
-        width: 240px;
-        min-width: 240px;
+        width: clamp(200px, 25vw, 260px);
+        min-width: clamp(200px, 25vw, 260px);
         background: var(--bg-card);
         border-right: 1px solid var(--border);
         display: flex;
         flex-direction: column;
         overflow: hidden;
+        flex-shrink: 0;
       }
       .sidebar-header {
-        padding: 16px 18px;
+        padding: 14px 16px;
         border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
       }
       .sidebar-label {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 700;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -817,13 +878,13 @@
       .online-list {
         flex: 1;
         overflow-y: auto;
-        padding: 8px 0;
+        padding: 6px 0;
       }
       .online-user {
         display: flex;
         align-items: flex-start;
-        gap: 10px;
-        padding: 9px 18px;
+        gap: 9px;
+        padding: 8px 16px;
         transition: var(--transition);
       }
       .online-user:hover {
@@ -833,6 +894,7 @@
       .online-dot {
         width: 8px;
         height: 8px;
+        min-width: 8px;
         border-radius: 50%;
         background: var(--emerald);
         flex-shrink: 0;
@@ -851,7 +913,7 @@
       }
 
       .online-handle {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         color: var(--text-secondary);
         font-weight: 500;
         white-space: nowrap;
@@ -863,62 +925,70 @@
         font-weight: 600;
       }
       .online-joined {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         color: var(--text-muted);
         margin-top: 1px;
       }
 
       .sidebar-footer {
-        padding: 14px 18px;
+        padding: 12px 16px;
         border-top: 1px solid var(--border);
+        flex-shrink: 0;
       }
 
+      /* ═══════ CHAT PANEL ═══════ */
       .chat-panel {
         flex: 1;
         display: flex;
         flex-direction: column;
         overflow: hidden;
         background: var(--bg-deep);
+        min-width: 0;
       }
 
       .chat-header {
-        padding: 14px 22px;
+        padding: 12px clamp(14px, 3vw, 22px);
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         background: var(--bg-card);
+        flex-shrink: 0;
       }
       .channel-name {
         font-family: var(--font-display);
         font-weight: 700;
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         color: var(--text-primary);
       }
       .channel-dot {
         width: 8px;
         height: 8px;
+        min-width: 8px;
         border-radius: 50%;
         background: var(--emerald);
         box-shadow: 0 0 8px var(--emerald);
         flex-shrink: 0;
       }
 
+      /* ═══════ MESSAGES ═══════ */
       .messages-container {
         flex: 1;
         overflow-y: auto;
-        padding: 20px 22px;
+        padding: clamp(12px, 2.5vw, 20px) clamp(12px, 3vw, 22px);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+        min-height: 0;
       }
 
-      /* ═══════ MESSAGE ROWS ═══════ */
       .msg-row {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         align-items: flex-start;
-        padding: 5px 8px;
+        padding: 5px 6px;
         border-radius: var(--radius-sm);
         animation: msgIn 0.22s ease both;
         position: relative;
@@ -927,10 +997,6 @@
       .msg-row:hover {
         background: rgba(255, 255, 255, 0.025);
       }
-      body.light .msg-row:hover {
-        background: rgba(0, 0, 0, 0.03);
-      }
-
       .msg-row:hover .msg-actions {
         opacity: 1;
       }
@@ -947,16 +1013,17 @@
       }
 
       .msg-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 9px;
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.78rem;
+        font-size: 0.75rem;
         font-weight: 700;
         flex-shrink: 0;
-        margin-top: 1px;
+        margin-top: 2px;
       }
       .msg-body {
         flex: 1;
@@ -965,11 +1032,12 @@
       .msg-meta {
         display: flex;
         align-items: baseline;
-        gap: 8px;
-        margin-bottom: 3px;
+        gap: 7px;
+        margin-bottom: 2px;
+        flex-wrap: wrap;
       }
       .msg-handle {
-        font-size: 0.85rem;
+        font-size: 0.84rem;
         font-weight: 700;
         color: var(--text-primary);
       }
@@ -977,24 +1045,24 @@
         color: #93c5fd;
       }
       .msg-time {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         color: var(--text-muted);
       }
       .msg-text {
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         color: var(--text-secondary);
         line-height: 1.55;
         word-break: break-word;
+        overflow-wrap: anywhere;
       }
 
-      /* Reply preview inside message */
       .reply-preview {
         background: var(--bg-surface);
         border-left: 3px solid var(--blue);
         border-radius: 0 6px 6px 0;
-        padding: 6px 10px;
-        margin-bottom: 5px;
-        font-size: 0.8rem;
+        padding: 5px 9px;
+        margin-bottom: 4px;
+        font-size: 0.78rem;
         color: var(--text-muted);
         cursor: pointer;
         transition: var(--transition);
@@ -1006,25 +1074,25 @@
         color: var(--text-secondary);
       }
 
-      /* Reactions */
       .msg-reactions {
         display: flex;
         flex-wrap: wrap;
-        gap: 5px;
-        margin-top: 5px;
+        gap: 4px;
+        margin-top: 4px;
       }
       .reaction-pill {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         background: var(--bg-surface);
         border: 1px solid var(--border);
         border-radius: 100px;
-        padding: 2px 8px;
-        font-size: 0.82rem;
+        padding: 2px 7px;
+        font-size: 0.8rem;
         cursor: pointer;
         transition: var(--transition);
         user-select: none;
+        min-height: 26px;
       }
       .reaction-pill:hover {
         border-color: var(--border-active);
@@ -1036,24 +1104,24 @@
       }
       .reaction-count {
         color: var(--text-secondary);
-        font-size: 0.78rem;
+        font-size: 0.76rem;
         font-weight: 600;
       }
 
-      /* Message hover actions */
       .msg-actions {
         position: absolute;
-        right: 8px;
+        right: 6px;
         top: 4px;
         display: flex;
-        gap: 4px;
+        gap: 3px;
         opacity: 0;
         transition: opacity 0.15s ease;
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 8px;
-        padding: 3px 4px;
+        padding: 3px 3px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        z-index: 10;
       }
 
       .msg-action-btn {
@@ -1061,59 +1129,69 @@
         border: none;
         color: var(--text-muted);
         cursor: pointer;
-        padding: 4px 6px;
+        padding: 5px 7px;
         border-radius: 5px;
         font-size: 0.85rem;
         transition: var(--transition);
+        min-width: 32px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .msg-action-btn:hover {
         color: var(--text-primary);
         background: var(--bg-surface);
       }
 
-      /* Emoji picker popup */
       .emoji-picker {
         position: absolute;
-        right: 8px;
-        top: 36px;
+        right: 6px;
+        top: 38px;
         background: var(--bg-card);
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 6px;
         display: flex;
-        gap: 4px;
+        gap: 3px;
+        flex-wrap: wrap;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         z-index: 50;
         animation: fadeIn 0.15s ease;
+        max-width: calc(100vw - 20px);
       }
-
       .emoji-opt {
         background: transparent;
         border: none;
         cursor: pointer;
         font-size: 1.2rem;
-        padding: 4px 5px;
+        padding: 5px 6px;
         border-radius: 6px;
         transition: var(--transition);
+        min-width: 36px;
+        min-height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .emoji-opt:hover {
         background: var(--bg-surface);
-        transform: scale(1.2);
+        transform: scale(1.15);
       }
 
-      /* Reply bar */
+      /* ═══════ REPLY BAR ═══════ */
       .reply-bar {
         display: none;
-        padding: 8px 22px;
+        padding: 8px clamp(14px, 3vw, 22px);
         background: var(--bg-card);
         border-top: 1px solid var(--border);
         align-items: center;
-        gap: 10px;
-        font-size: 0.83rem;
+        gap: 8px;
+        font-size: 0.82rem;
         color: var(--text-secondary);
         border-left: 3px solid var(--blue);
+        flex-shrink: 0;
       }
-
       .reply-bar.visible {
         display: flex;
       }
@@ -1122,6 +1200,7 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-width: 0;
       }
       .reply-bar strong {
         color: var(--text-primary);
@@ -1132,9 +1211,15 @@
         color: var(--text-muted);
         cursor: pointer;
         font-size: 1rem;
-        padding: 2px 6px;
+        padding: 4px 6px;
         border-radius: 4px;
         transition: var(--transition);
+        min-width: 32px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
       .reply-cancel:hover {
         color: var(--rose);
@@ -1143,8 +1228,8 @@
       .date-divider {
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin: 14px 0;
+        gap: 10px;
+        margin: 12px 0;
       }
       .date-divider::before,
       .date-divider::after {
@@ -1154,28 +1239,35 @@
         background: var(--border);
       }
       .date-divider span {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
         font-weight: 600;
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--text-muted);
-        padding: 2px 10px;
+        padding: 2px 8px;
+        white-space: nowrap;
       }
 
+      /* ═══════ STICKY CHAT INPUT ═══════ */
       .chat-input-area {
-        padding: 16px 22px;
+        padding: clamp(10px, 2vw, 14px) clamp(12px, 3vw, 22px);
         border-top: 1px solid var(--border);
         background: var(--bg-card);
+        flex-shrink: 0;
+        /* Safe area for notched phones */
+        padding-bottom: max(clamp(10px, 2vw, 14px), var(--safe-bottom));
+        padding-left: max(clamp(12px, 3vw, 22px), var(--safe-left));
+        padding-right: max(clamp(12px, 3vw, 22px), var(--safe-right));
       }
 
       .input-row {
         display: flex;
-        gap: 10px;
+        gap: 8px;
         align-items: flex-end;
         background: var(--bg-input);
         border: 1px solid var(--border);
         border-radius: 12px;
-        padding: 10px 14px;
+        padding: 8px 12px;
         transition: var(--transition);
       }
       .input-row:focus-within {
@@ -1189,19 +1281,20 @@
         border: none;
         outline: none;
         color: var(--text-primary);
-        font-family: var(--font-body);
         font-size: 0.95rem;
         resize: none;
         max-height: 120px;
         line-height: 1.5;
+        min-height: 24px;
       }
       #message-input::placeholder {
         color: var(--text-muted);
       }
 
       .send-btn {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
         border-radius: 9px;
         border: none;
         background: linear-gradient(135deg, #2563eb, #3b82f6);
@@ -1219,7 +1312,7 @@
         box-shadow: 0 4px 16px var(--blue-glow);
       }
       .send-btn:active {
-        transform: scale(0.96);
+        transform: scale(0.94);
       }
 
       /* ═══════ MODAL ═══════ */
@@ -1229,10 +1322,11 @@
         inset: 0;
         background: rgba(0, 0, 0, 0.7);
         backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         z-index: 500;
         align-items: center;
         justify-content: center;
-        padding: 16px;
+        padding: clamp(12px, 4vw, 16px);
       }
       .modal-overlay.open {
         display: flex;
@@ -1246,17 +1340,24 @@
         width: 100%;
         max-width: 400px;
         animation: slideUp 0.25s ease both;
+        max-height: 90vh;
+        overflow-y: auto;
       }
       .modal-header {
-        padding: 20px 24px 16px;
+        padding: 18px 20px 14px;
         border-bottom: 1px solid var(--border);
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 10px;
+        position: sticky;
+        top: 0;
+        background: var(--bg-card);
+        z-index: 1;
       }
       .modal-title {
         font-family: var(--font-display);
-        font-size: 0.9rem;
+        font-size: 0.88rem;
         font-weight: 700;
       }
       .modal-close {
@@ -1267,38 +1368,46 @@
         font-size: 1rem;
         transition: var(--transition);
         padding: 4px;
+        min-width: 30px;
+        min-height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
       }
       .modal-close:hover {
         color: var(--text-primary);
       }
       .modal-body {
-        padding: 24px;
+        padding: clamp(18px, 4vw, 24px);
       }
 
       /* ═══════ TOAST ═══════ */
       #toast-container {
         position: fixed;
-        bottom: 24px;
-        right: 24px;
+        bottom: max(20px, var(--safe-bottom));
+        right: max(16px, var(--safe-right));
         z-index: 1000;
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         pointer-events: none;
+        max-width: calc(100vw - 32px);
       }
       .toast-item {
         background: var(--bg-surface);
         border: 1px solid var(--border);
         border-radius: var(--radius-md);
-        padding: 12px 16px;
-        font-size: 0.88rem;
+        padding: 11px 14px;
+        font-size: 0.85rem;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 9px;
         animation: toastIn 0.3s ease;
-        min-width: 240px;
-        max-width: 320px;
+        min-width: min(220px, calc(100vw - 32px));
+        max-width: min(300px, calc(100vw - 32px));
+        word-break: break-word;
       }
       .toast-item.removing {
         animation: toastOut 0.3s ease forwards;
@@ -1323,8 +1432,8 @@
       /* ═══════ SPINNER ═══════ */
       .spinner {
         display: inline-block;
-        width: 18px;
-        height: 18px;
+        width: 16px;
+        height: 16px;
         border: 2px solid rgba(255, 255, 255, 0.2);
         border-top-color: #fff;
         border-radius: 50%;
@@ -1337,30 +1446,101 @@
         }
       }
 
-      /* ═══════ MOBILE ═══════ */
+      /* ═══════ SIDEBAR TOGGLE BUTTON ═══════ */
       .sidebar-toggle {
         display: none;
         background: transparent;
         border: 1px solid var(--border);
         border-radius: var(--radius-sm);
         color: var(--text-secondary);
-        padding: 7px 10px;
+        padding: 7px 9px;
         cursor: pointer;
         font-size: 0.9rem;
+        min-width: 38px;
+        min-height: 38px;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        transition: var(--transition);
+        flex-shrink: 0;
+      }
+      .sidebar-toggle:hover {
+        border-color: var(--border-active);
+        color: var(--text-primary);
       }
 
-      @media (max-width: 700px) {
-        .auth-card {
-          padding: 28px 20px;
+      /* ════════════════════════════════════════
+         RESPONSIVE BREAKPOINTS — MOBILE FIRST
+         ════════════════════════════════════════ */
+
+      /* ── Ultra-wide (1600px+) ── */
+      @media (min-width: 1600px) {
+        .admin-body {
+          max-width: 1300px;
         }
         .sidebar {
+          width: 280px;
+          min-width: 280px;
+        }
+        body {
+          font-size: 16px;
+        }
+      }
+
+      /* ── Desktop (1024px+) ── */
+      @media (min-width: 1024px) {
+        .messages-container {
+          padding: 20px 28px;
+        }
+        .chat-header {
+          padding: 14px 28px;
+        }
+        .chat-input-area {
+          padding: 16px 28px;
+        }
+      }
+
+      /* ── Tablet landscape (768px – 1023px) ── */
+      @media (max-width: 1023px) {
+        .sidebar {
+          width: 210px;
+          min-width: 210px;
+        }
+      }
+
+      /* ── Tablet portrait (600px – 767px) ── */
+      @media (max-width: 767px) {
+        .user-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+        .action-group {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        /* Hide text labels in topbar, keep icons */
+        .btn-ghost .btn-label {
+          display: none;
+        }
+        .badge-admin .badge-label {
+          display: none;
+        }
+      }
+
+      /* ── Mobile (max 699px) ── */
+      @media (max-width: 699px) {
+        /* Sidebar slides in from left */
+        .sidebar {
           position: fixed;
-          left: -240px;
+          left: -280px;
           top: 0;
           bottom: 0;
+          width: 280px;
+          min-width: 280px;
           z-index: 200;
           transition: left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+          box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
         }
         .sidebar.open {
           left: 0;
@@ -1369,35 +1549,135 @@
           display: none;
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.5);
+          background: rgba(0, 0, 0, 0.55);
           z-index: 199;
           backdrop-filter: blur(2px);
+          -webkit-backdrop-filter: blur(2px);
         }
         .sidebar-overlay.open {
           display: block;
         }
         .sidebar-toggle {
           display: flex;
-          align-items: center;
+        }
+
+        /* Input area fully sticky to bottom */
+        .chat-input-area {
+          position: sticky;
+          bottom: 0;
+          z-index: 50;
+        }
+
+        /* Compact admin body */
+        .admin-body {
+          padding: 14px 12px;
+        }
+
+        /* Topbar items more compact */
+        .top-bar {
           gap: 6px;
         }
-        .admin-body {
-          padding: 16px 12px;
+        .btn-ghost {
+          padding: 7px 9px;
+          font-size: 0.8rem;
         }
-        .top-bar {
+
+        /* Show all action buttons full-width on mobile */
+        .action-group {
+          flex-wrap: wrap;
+          gap: 6px;
+        }
+        .btn-action {
+          flex: 1;
+          min-width: 80px;
+          text-align: center;
+          justify-content: center;
+        }
+
+        /* Adjust toast position above chat input */
+        #toast-container {
+          bottom: max(84px, calc(72px + var(--safe-bottom)));
+          right: 12px;
+        }
+
+        /* Emoji picker adjustments */
+        .emoji-picker {
+          right: 0;
+          left: 0;
+          position: fixed;
+          bottom: calc(72px + var(--safe-bottom));
+          top: auto;
+          border-radius: 12px 12px 0 0;
+          justify-content: center;
           padding: 12px 16px;
+          gap: 8px;
         }
-        .chat-input-area {
-          padding: 12px 14px;
-        }
-        .messages-container {
-          padding: 14px 14px;
+
+        /* Ensure msg actions don't go offscreen */
+        .msg-actions {
+          right: 4px;
         }
       }
 
+      /* ── Small phones (max 400px) ── */
       @media (max-width: 400px) {
         .brand {
-          font-size: 1.3rem;
+          font-size: 1rem;
+        }
+        .auth-card {
+          padding: 22px 16px;
+        }
+        .top-bar {
+          padding: 0 10px;
+        }
+        .messages-container {
+          padding: 10px;
+        }
+        .chat-input-area {
+          padding: 8px 10px;
+        }
+        .btn-ghost {
+          padding: 7px 8px;
+          gap: 0;
+        }
+        .btn-ghost i {
+          margin: 0;
+        }
+      }
+
+      /* ── Landscape mobile (height <= 500px) ── */
+      @media (max-height: 500px) and (orientation: landscape) {
+        #view-auth {
+          padding: 12px;
+        }
+        .auth-card {
+          padding: 18px;
+        }
+        .auth-icon {
+          width: 42px;
+          height: 42px;
+          margin-bottom: 8px;
+        }
+        .auth-header {
+          margin-bottom: 14px;
+        }
+        .form-group {
+          margin-bottom: 10px;
+        }
+        .messages-container {
+          padding: 8px 12px;
+        }
+      }
+
+      /* ── Touch: larger tap targets but keep actions hidden until tap ── */
+      @media (hover: none) and (pointer: coarse) {
+        .msg-action-btn {
+          min-width: 36px;
+          min-height: 36px;
+        }
+        .reaction-pill {
+          min-height: 30px;
+          padding: 4px 10px;
         }
       }
     </style>
@@ -1510,19 +1790,22 @@
       <div id="view-admin" class="view">
         <div class="top-bar">
           <div class="top-bar-left">
-            <span class="brand" style="font-size: 1.1rem">Hojoborol</span>
-            <span class="badge-custom badge-admin"
-              ><i
-                class="fa-solid fa-shield-halved"
-                style="font-size: 0.7rem"
-              ></i>
-              Admin</span
+            <span class="brand" style="font-size: clamp(0.9rem, 3vw, 1.1rem)"
+              >Hojoborol</span
             >
+            <span class="badge-custom badge-admin">
+              <i
+                class="fa-solid fa-shield-halved"
+                style="font-size: 0.68rem"
+              ></i>
+              <span class="badge-label">Admin</span>
+            </span>
           </div>
           <div class="top-bar-right">
             <span
-              style="font-size: 0.85rem; color: var(--text-muted)"
+              style="font-size: 0.82rem; color: var(--text-muted)"
               id="admin-handle-label"
+              class="d-none d-md-inline"
             ></span>
             <button
               class="theme-toggle"
@@ -1534,13 +1817,14 @@
             <button
               class="btn-ghost"
               onclick="goToChat()"
-              style="font-size: 0.82rem; padding: 7px 12px"
+              style="font-size: 0.8rem; padding: 7px 10px"
             >
-              <i class="fa-solid fa-comments"></i
-              ><span class="d-none d-sm-inline">Chat</span>
+              <i class="fa-solid fa-comments"></i>
+              <span class="btn-label d-none d-sm-inline">Chat</span>
             </button>
             <button class="btn-ghost" onclick="doLogout()">
-              <i class="fa-solid fa-right-from-bracket"></i> Logout
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <span class="btn-label d-none d-sm-inline">Logout</span>
             </button>
           </div>
         </div>
@@ -1557,12 +1841,16 @@
                 >Chat Management</span
               >
             </div>
-            <div class="panel-body" style="padding: 18px 22px">
+            <div
+              class="panel-body"
+              style="padding: 16px clamp(14px, 3vw, 22px)"
+            >
               <p
                 style="
-                  font-size: 0.88rem;
+                  font-size: 0.87rem;
                   color: var(--text-secondary);
                   margin-bottom: 14px;
+                  line-height: 1.5;
                 "
               >
                 Permanently delete all messages from the chat. This action
@@ -1586,9 +1874,10 @@
               <button
                 class="btn-ghost"
                 onclick="loadAdminData()"
-                style="font-size: 0.78rem; padding: 6px 12px"
+                style="font-size: 0.76rem; padding: 6px 10px"
               >
-                <i class="fa-solid fa-rotate"></i> Refresh
+                <i class="fa-solid fa-rotate"></i>
+                <span class="btn-label">Refresh</span>
               </button>
             </div>
             <div class="panel-body" id="pending-list">
@@ -1628,7 +1917,9 @@
             >
               <i class="fa-solid fa-bars"></i>
             </button>
-            <span class="brand" style="font-size: 1.05rem">Hojoborol</span>
+            <span class="brand" style="font-size: clamp(0.9rem, 3.5vw, 1.05rem)"
+              >Hojoborol</span
+            >
           </div>
           <div class="top-bar-right">
             <button
@@ -1643,8 +1934,8 @@
               class="btn-ghost admin-only-btn"
               style="
                 display: none;
-                font-size: 0.82rem;
-                padding: 7px 12px;
+                font-size: 0.8rem;
+                padding: 7px 10px;
                 border-color: rgba(124, 58, 237, 0.4);
                 color: #c4b5fd;
               "
@@ -1652,19 +1943,19 @@
               title="Admin Panel"
             >
               <i class="fa-solid fa-shield-halved"></i>
-              <span class="d-none d-sm-inline">Admin</span>
+              <span class="btn-label d-none d-sm-inline">Admin</span>
             </button>
             <button
               class="btn-ghost"
-              style="font-size: 0.82rem; padding: 7px 12px"
+              style="font-size: 0.8rem; padding: 7px 10px"
               onclick="openPasswordModal()"
             >
               <i class="fa-solid fa-key"></i>
-              <span class="d-none d-sm-inline">Settings</span>
+              <span class="btn-label d-none d-sm-inline">Settings</span>
             </button>
             <button class="btn-ghost" onclick="doLogout()">
               <i class="fa-solid fa-right-from-bracket"></i>
-              <span class="d-none d-sm-inline">Logout</span>
+              <span class="btn-label d-none d-sm-inline">Logout</span>
             </button>
           </div>
         </div>
@@ -1683,8 +1974,8 @@
                   class="fa-solid fa-circle"
                   style="
                     color: var(--emerald);
-                    font-size: 0.5rem;
-                    margin-right: 6px;
+                    font-size: 0.48rem;
+                    margin-right: 5px;
                     vertical-align: middle;
                   "
                 ></i>
@@ -1695,7 +1986,7 @@
             <div class="sidebar-footer">
               <div
                 style="
-                  font-size: 0.78rem;
+                  font-size: 0.76rem;
                   color: var(--text-muted);
                   text-align: center;
                 "
@@ -1715,16 +2006,17 @@
               <span class="channel-name"># general</span>
               <span
                 style="
-                  font-size: 0.8rem;
+                  font-size: 0.78rem;
                   color: var(--text-muted);
                   margin-left: auto;
+                  white-space: nowrap;
                 "
               >
                 <i
                   class="fa-solid fa-lock"
-                  style="font-size: 0.7rem; margin-right: 4px"
+                  style="font-size: 0.68rem; margin-right: 3px"
                 ></i
-                >End-to-end chat
+                >End-to-end
               </span>
             </div>
 
@@ -1736,7 +2028,7 @@
             <div class="reply-bar" id="reply-bar">
               <i
                 class="fa-solid fa-reply"
-                style="color: var(--blue); font-size: 0.85rem; flex-shrink: 0"
+                style="color: var(--blue); font-size: 0.82rem; flex-shrink: 0"
               ></i>
               <div class="reply-bar-text" id="reply-bar-text">
                 Replying to <strong id="reply-bar-handle"></strong>:
@@ -1760,7 +2052,11 @@
                   onkeydown="handleInputKey(event)"
                   oninput="autoResize(this)"
                 ></textarea>
-                <button class="send-btn" onclick="sendMessage()">
+                <button
+                  class="send-btn"
+                  onclick="sendMessage()"
+                  aria-label="Send message"
+                >
                   <i class="fa-solid fa-paper-plane"></i>
                 </button>
               </div>
@@ -1793,7 +2089,7 @@
           <div
             id="modal-alert"
             class="alert-custom"
-            style="margin-bottom: 16px"
+            style="margin-bottom: 14px"
           ></div>
           <div class="form-group">
             <label class="form-label">Current Password</label>
@@ -1824,7 +2120,7 @@
           </div>
           <button
             class="btn-primary-custom"
-            style="margin-top: 20px"
+            style="margin-top: 18px"
             onclick="changePassword()"
           >
             <span id="cp-btn-text">Update Password</span>
@@ -1856,8 +2152,9 @@
           <p
             style="
               color: var(--text-secondary);
-              font-size: 0.92rem;
-              margin-bottom: 20px;
+              font-size: 0.9rem;
+              margin-bottom: 18px;
+              line-height: 1.55;
             "
           >
             This will permanently delete
@@ -1884,6 +2181,7 @@
       </div>
     </div>
 
+    <!-- MODAL: Remove User -->
     <div
       class="modal-overlay"
       id="remove-user-modal"
@@ -1906,7 +2204,7 @@
           <p
             style="
               color: var(--text-secondary);
-              font-size: 0.92rem;
+              font-size: 0.9rem;
               margin-bottom: 6px;
             "
           >
@@ -1921,7 +2219,8 @@
             style="
               color: var(--text-muted);
               font-size: 0.82rem;
-              margin-bottom: 20px;
+              margin-bottom: 18px;
+              line-height: 1.5;
             "
           >
             Their account and all their messages will be permanently deleted.
@@ -1955,14 +2254,14 @@
     <script src="socket.io.js"></script>
 
     <script>
-      /* ══════════════════════════════════════
-   STATE
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         STATE
+         ════════════════════════════════════ */
       let session = null;
       let socket = null;
       let lastMsgDate = null;
-      let replyingTo = null; // { id, handle, content }
-      let activeEmojiPicker = null; // currently open emoji picker msg id
+      let replyingTo = null;
+      let activeEmojiPicker = null;
 
       const ALLOWED_EMOJIS = ["👍", "❤️", "😂", "😮", "😢", "🔥"];
 
@@ -1986,15 +2285,66 @@
         return handle.charAt(0).toUpperCase();
       }
 
-      /* ══════════════════════════════════════
-   THEME
-══════════════════════════════════════ */
-      function applyTheme(theme) {
-        if (theme === "light") {
-          document.body.classList.add("light");
-        } else {
-          document.body.classList.remove("light");
+      /* ════════════════════════════════════
+         KEYBOARD / VIEWPORT HANDLING (mobile)
+         ════════════════════════════════════ */
+      // Use Visual Viewport API to handle keyboard open/close on mobile
+      function setupViewportHandler() {
+        if (!window.visualViewport) return;
+
+        function onViewportChange() {
+          const vv = window.visualViewport;
+          const chatView = document.getElementById("view-chat");
+          if (!chatView || !chatView.classList.contains("active")) return;
+
+          // On mobile, when keyboard opens the viewport height shrinks.
+          // We adjust the chat view height so input stays visible.
+          const offsetTop = vv.offsetTop || 0;
+          const viewportHeight = vv.height;
+
+          chatView.style.height = viewportHeight + "px";
+          chatView.style.position = "fixed";
+          chatView.style.top = offsetTop + "px";
+          chatView.style.left = vv.offsetLeft + "px";
+          chatView.style.width = vv.width + "px";
         }
+
+        function onViewportScrollEnd() {
+          const chatView = document.getElementById("view-chat");
+          if (!chatView || !chatView.classList.contains("active")) return;
+          // Scroll messages to bottom when keyboard closes
+          scrollToBottom(false);
+        }
+
+        window.visualViewport.addEventListener("resize", onViewportChange);
+        window.visualViewport.addEventListener("scroll", onViewportChange);
+
+        // Reset styles when keyboard closes (viewport returns to full size)
+        window.visualViewport.addEventListener("resize", () => {
+          const vv = window.visualViewport;
+          const isKeyboardOpen = vv.height < window.innerHeight * 0.75;
+          const chatView = document.getElementById("view-chat");
+          if (!chatView) return;
+
+          if (!isKeyboardOpen) {
+            chatView.style.height = "";
+            chatView.style.position = "";
+            chatView.style.top = "";
+            chatView.style.left = "";
+            chatView.style.width = "";
+          } else {
+            onViewportChange();
+            // Scroll to bottom so latest messages are visible
+            setTimeout(() => scrollToBottom(true), 80);
+          }
+        });
+      }
+
+      /* ════════════════════════════════════
+         THEME
+         ════════════════════════════════════ */
+      function applyTheme(theme) {
+        document.body.classList.toggle("light", theme === "light");
         sessionStorage.setItem("nc_theme", theme);
       }
 
@@ -2005,29 +2355,26 @@
         applyTheme(current === "light" ? "dark" : "light");
       }
 
-      /* ══════════════════════════════════════
-   SESSION PERSISTENCE (localStorage = survives reload)
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         SESSION PERSISTENCE
+         ════════════════════════════════════ */
       function saveSession(s) {
         localStorage.setItem("nc_session", JSON.stringify(s));
       }
-
       function clearSession() {
         localStorage.removeItem("nc_session");
       }
-
       function loadSavedSession() {
         try {
-          const raw = localStorage.getItem("nc_session");
-          return raw ? JSON.parse(raw) : null;
+          return JSON.parse(localStorage.getItem("nc_session") || "null");
         } catch (e) {
           return null;
         }
       }
 
-      /* ══════════════════════════════════════
-   URL / ROUTING
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         ROUTING
+         ════════════════════════════════════ */
       function getPathView() {
         const p = window.location.pathname;
         if (p === "/chat") return "chat";
@@ -2042,23 +2389,34 @@
           "view-admin": "/admin",
         };
         const target = map[view] || "/";
-        if (window.location.pathname !== target) {
+        if (window.location.pathname !== target)
           history.pushState({ view }, "", target);
-        }
       }
 
-      /* ══════════════════════════════════════
-   VIEW SWITCHING
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         VIEW SWITCHING
+         ════════════════════════════════════ */
       function showView(id) {
         $(".view").removeClass("active");
         $("#" + id).addClass("active");
         setPath(id);
+
+        // Reset visual viewport overrides when leaving chat
+        if (id !== "view-chat") {
+          const cv = document.getElementById("view-chat");
+          if (cv) {
+            cv.style.height = "";
+            cv.style.position = "";
+            cv.style.top = "";
+            cv.style.left = "";
+            cv.style.width = "";
+          }
+        }
       }
 
-      /* ══════════════════════════════════════
-   AUTH TABS
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         AUTH TABS
+         ════════════════════════════════════ */
       function switchTab(tab) {
         clearAuthAlert();
         if (tab === "login") {
@@ -2091,9 +2449,9 @@
         $("#auth-alert").removeClass("show");
       }
 
-      /* ══════════════════════════════════════
-   REGISTER
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         REGISTER
+         ════════════════════════════════════ */
       async function doRegister() {
         clearAuthAlert();
         const handle = $("#reg-handle").val().trim();
@@ -2128,9 +2486,9 @@
         }
       }
 
-      /* ══════════════════════════════════════
-   LOGIN
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         LOGIN
+         ════════════════════════════════════ */
       async function doLogin() {
         clearAuthAlert();
         const handle = $("#login-handle").val().trim();
@@ -2159,11 +2517,8 @@
           };
           saveSession(session);
           $("#login-handle, #login-password").val("");
-          if (data.isAdmin) {
-            enterAdminView();
-          } else {
-            enterChatView();
-          }
+          if (data.isAdmin) enterAdminView();
+          else enterChatView();
         } catch (e) {
           showAuthAlert("Network error. Please try again.");
         } finally {
@@ -2172,9 +2527,9 @@
         }
       }
 
-      /* ══════════════════════════════════════
-   LOGOUT
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         LOGOUT
+         ════════════════════════════════════ */
       async function doLogout() {
         if (socket) {
           socket.disconnect();
@@ -2201,9 +2556,9 @@
         showToast("Signed out.", "info");
       }
 
-      /* ══════════════════════════════════════
-   ADMIN VIEW
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         ADMIN VIEW
+         ════════════════════════════════════ */
       function enterAdminView() {
         $("#admin-handle-label").text(session.handle);
         showView("view-admin");
@@ -2236,24 +2591,24 @@
           }
           data.forEach((u) => {
             el.append(`
-        <div class="user-row" id="pending-row-${u.id}">
-          <div class="user-row-left">
-            <div class="avatar avatar-amber">${getInitial(u.handle)}</div>
-            <div>
-              <div class="user-handle">${escHtml(u.handle)}</div>
-              <div class="user-status-label">Awaiting approval</div>
-            </div>
-          </div>
-          <div class="action-group">
-            <button class="btn-action btn-approve" onclick="updateStatus(${u.id},'approved','${escHtml(u.handle)}')">
-              <i class="fa-solid fa-check" style="margin-right:5px"></i>Approve
-            </button>
-            <button class="btn-action btn-reject" onclick="updateStatus(${u.id},'rejected','${escHtml(u.handle)}')">
-              <i class="fa-solid fa-xmark" style="margin-right:5px"></i>Reject
-            </button>
-          </div>
-        </div>
-      `);
+              <div class="user-row" id="pending-row-${u.id}">
+                <div class="user-row-left">
+                  <div class="avatar avatar-amber">${getInitial(u.handle)}</div>
+                  <div style="min-width:0">
+                    <div class="user-handle">${escHtml(u.handle)}</div>
+                    <div class="user-status-label">Awaiting approval</div>
+                  </div>
+                </div>
+                <div class="action-group">
+                  <button class="btn-action btn-approve" onclick="updateStatus(${u.id},'approved','${escAttr(u.handle)}')">
+                    <i class="fa-solid fa-check" style="margin-right:4px"></i>Approve
+                  </button>
+                  <button class="btn-action btn-reject" onclick="updateStatus(${u.id},'rejected','${escAttr(u.handle)}')">
+                    <i class="fa-solid fa-xmark" style="margin-right:4px"></i>Reject
+                  </button>
+                </div>
+              </div>
+            `);
           });
         } catch (e) {
           console.error(e);
@@ -2283,22 +2638,22 @@
                   ? "avatar-rose"
                   : "avatar-amber";
             el.append(`
-        <div class="user-row" id="user-row-${u.id}">
-          <div class="user-row-left">
-            <div class="avatar ${avatarClass}">${getInitial(u.handle)}</div>
-            <div>
-              <div class="user-handle">${escHtml(u.handle)}</div>
-              <div class="user-status-label">Registered user</div>
-            </div>
-          </div>
-          <div class="action-group">
-            ${statusPill}
-            <button class="btn-action btn-reject" onclick="confirmRemoveUser(${u.id},'${escHtml(u.handle)}')" title="Remove user" style="margin-left:8px">
-              <i class="fa-solid fa-user-minus" style="margin-right:5px"></i>Remove
-            </button>
-          </div>
-        </div>
-      `);
+              <div class="user-row" id="user-row-${u.id}">
+                <div class="user-row-left">
+                  <div class="avatar ${avatarClass}">${getInitial(u.handle)}</div>
+                  <div style="min-width:0">
+                    <div class="user-handle">${escHtml(u.handle)}</div>
+                    <div class="user-status-label">Registered user</div>
+                  </div>
+                </div>
+                <div class="action-group">
+                  ${statusPill}
+                  <button class="btn-action btn-reject" onclick="confirmRemoveUser(${u.id},'${escAttr(u.handle)}')" title="Remove user">
+                    <i class="fa-solid fa-user-minus" style="margin-right:4px"></i>Remove
+                  </button>
+                </div>
+              </div>
+            `);
           });
         } catch (e) {
           console.error(e);
@@ -2387,20 +2742,18 @@
         }
       }
 
-      /* ══════════════════════════════════════
-   CHAT VIEW
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         CHAT VIEW
+         ════════════════════════════════════ */
       function enterChatView() {
         $("#chat-my-handle").text(session.handle);
-        // Show admin button only for admins
-        if (session && session.isAdmin) {
-          $("#btn-admin-panel").show();
-        } else {
-          $("#btn-admin-panel").hide();
-        }
+        if (session && session.isAdmin) $("#btn-admin-panel").show();
+        else $("#btn-admin-panel").hide();
         showView("view-chat");
         loadMessages();
         connectSocket();
+        // Initialize viewport handler for mobile keyboard
+        setTimeout(setupViewportHandler, 100);
       }
 
       async function loadMessages() {
@@ -2443,34 +2796,33 @@
 
         const replyHtml = reply_preview
           ? `<div class="reply-preview" onclick="scrollToMessage(${id})">
-         <strong>${escHtml(reply_preview.handle)}</strong>: ${escHtml(reply_preview.content)}${reply_preview.content.length >= 80 ? "…" : ""}
-       </div>`
+               <strong>${escHtml(reply_preview.handle)}</strong>: ${escHtml(reply_preview.content)}${reply_preview.content.length >= 80 ? "…" : ""}
+             </div>`
           : "";
 
         const reactionsHtml = buildReactionsHtml(id, reactions || {});
 
         const row = `
-    <div class="msg-row" id="msg-${id}" data-id="${id}" ${anim}>
-      <div class="msg-avatar" style="${style}">${getInitial(handle)}</div>
-      <div class="msg-body">
-        <div class="msg-meta">
-          <span class="${nameClass}">${escHtml(handle)}</span>
-          <span class="msg-time">${ts.format("h:mm A")}</span>
-        </div>
-        ${replyHtml}
-        <div class="msg-text">${escHtml(content)}</div>
-        <div class="msg-reactions" id="reactions-${id}">${reactionsHtml}</div>
-      </div>
-      <div class="msg-actions">
-        <button class="msg-action-btn" title="React" onclick="toggleEmojiPicker(${id}, event)">
-          <i class="fa-regular fa-face-smile"></i>
-        </button>
-        <button class="msg-action-btn" title="Reply" onclick="setReply(${id}, '${escAttr(handle)}', '${escAttr(content)}')">
-          <i class="fa-solid fa-reply"></i>
-        </button>
-      </div>
-    </div>
-  `;
+          <div class="msg-row" id="msg-${id}" data-id="${id}" ${anim}>
+            <div class="msg-avatar" style="${style}">${getInitial(handle)}</div>
+            <div class="msg-body">
+              <div class="msg-meta">
+                <span class="${nameClass}">${escHtml(handle)}</span>
+                <span class="msg-time">${ts.format("h:mm A")}</span>
+              </div>
+              ${replyHtml}
+              <div class="msg-text">${escHtml(content)}</div>
+              <div class="msg-reactions" id="reactions-${id}">${reactionsHtml}</div>
+            </div>
+            <div class="msg-actions">
+              <button class="msg-action-btn" title="React" onclick="toggleEmojiPicker(${id}, event)">
+                <i class="fa-regular fa-face-smile"></i>
+              </button>
+              <button class="msg-action-btn" title="Reply" onclick="setReply(${id}, '${escAttr(handle)}', '${escAttr(content)}')">
+                <i class="fa-solid fa-reply"></i>
+              </button>
+            </div>
+          </div>`;
         $("#messages-container").append(row);
       }
 
@@ -2482,8 +2834,8 @@
           const mineClass = mine ? " mine" : "";
           const title = handles.join(", ");
           html += `<span class="reaction-pill${mineClass}" title="${escHtml(title)}" onclick="sendReaction(${msgId}, '${emoji}')">
-      ${emoji} <span class="reaction-count">${handles.length}</span>
-    </span>`;
+            ${emoji} <span class="reaction-count">${handles.length}</span>
+          </span>`;
         }
         return html;
       }
@@ -2493,14 +2845,14 @@
         if (el) el.innerHTML = buildReactionsHtml(msgId, reactions);
       }
 
-      /* ══════════════════════════════════════
-   REPLY
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         REPLY
+         ════════════════════════════════════ */
       function setReply(id, handle, content) {
         replyingTo = { id, handle, content };
         $("#reply-bar-handle").text(handle);
         $("#reply-bar-content").text(
-          content.length > 60 ? content.substring(0, 60) + "…" : content,
+          content.length > 55 ? content.substring(0, 55) + "…" : content,
         );
         $("#reply-bar").addClass("visible");
         $("#message-input").focus();
@@ -2512,20 +2864,19 @@
         $("#reply-bar").removeClass("visible");
       }
 
-      /* ══════════════════════════════════════
-   EMOJI PICKER
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         EMOJI PICKER
+         ════════════════════════════════════ */
       function toggleEmojiPicker(msgId, e) {
         e.stopPropagation();
-        const existing = document.getElementById("emoji-picker-" + msgId);
-        if (existing) {
+        if (document.getElementById("emoji-picker-" + msgId)) {
           closeEmojiPicker();
           return;
         }
         closeEmojiPicker();
 
-        const btnRow = document.querySelector(`#msg-${msgId} .msg-actions`);
-        if (!btnRow) return;
+        const row = document.querySelector(`#msg-${msgId}`);
+        if (!row) return;
 
         const picker = document.createElement("div");
         picker.className = "emoji-picker";
@@ -2543,7 +2894,13 @@
           picker.appendChild(btn);
         });
 
-        btnRow.parentElement.appendChild(picker);
+        // On mobile, append to body for fixed positioning; on desktop append to row
+        const isMobile = window.innerWidth <= 699;
+        if (isMobile) {
+          document.body.appendChild(picker);
+        } else {
+          row.appendChild(picker);
+        }
         activeEmojiPicker = msgId;
       }
 
@@ -2574,7 +2931,7 @@
       function scrollToBottom(force = false) {
         const el = document.getElementById("messages-container");
         if (!el) return;
-        const threshold = 120;
+        const threshold = 140;
         const isNearBottom =
           el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
         if (isNearBottom || force) el.scrollTop = el.scrollHeight;
@@ -2605,39 +2962,33 @@
         el.style.height = Math.min(el.scrollHeight, 120) + "px";
       }
 
-      /* ══════════════════════════════════════
-   SOCKET.IO
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         SOCKET.IO
+         ════════════════════════════════════ */
       function connectSocket() {
         if (socket) {
           socket.disconnect();
           socket = null;
         }
-
         socket = io({ transports: ["polling"] });
 
         socket.on("connect", () => {
           socket.emit("auth", session.token);
         });
-
         socket.on("auth:ok", (data) => {
           console.log("[Socket] Authenticated as", data.handle);
         });
-
         socket.on("auth:error", (msg) => {
           showToast(msg, "error");
           doLogout();
         });
-
         socket.on("chat:message", (msg) => {
           renderMessage(msg, true);
           scrollToBottom();
         });
-
         socket.on("chat:reactions_updated", ({ messageId, reactions }) => {
           updateReactions(messageId, reactions);
         });
-
         socket.on("chat:cleared", ({ by }) => {
           lastMsgDate = null;
           $("#messages-container").html(
@@ -2645,17 +2996,13 @@
           );
           showToast(`Chat was cleared by ${by}.`, "info");
         });
-
         socket.on("users:online", (users) => {
           updateOnlineList(users);
         });
-
         socket.on("admin:user_status_changed", () => {
           if (session && session.isAdmin) loadAdminData();
         });
-
         socket.on("admin:user_removed", ({ handle }) => {
-          // If the removed user is the current session, force logout
           if (session && session.handle === handle) {
             showToast("Your account has been removed by an admin.", "error");
             setTimeout(() => {
@@ -2667,11 +3014,9 @@
           }
           if (session && session.isAdmin) loadAdminData();
         });
-
         socket.on("disconnect", () => {
           console.log("[Socket] Disconnected");
         });
-
         socket.on("error", (msg) => {
           showToast(msg, "error");
         });
@@ -2687,26 +3032,26 @@
             const isSelf = session && u.handle === session.handle;
             const cls = isSelf ? "online-handle self" : "online-handle";
             const youLabel = isSelf
-              ? ' <span style="color:var(--text-muted);font-weight:400;font-size:0.75rem">(you)</span>'
+              ? ' <span style="color:var(--text-muted);font-weight:400;font-size:0.72rem">(you)</span>'
               : "";
             const joinTime = u.joinedAt
               ? moment(u.joinedAt).format("h:mm A")
               : "";
             el.append(`
-      <div class="online-user">
-        <div class="online-dot"></div>
-        <div>
-          <div class="${cls}">${escHtml(u.handle)}${youLabel}</div>
-          ${joinTime ? `<div class="online-joined"><i class="fa-regular fa-clock" style="font-size:0.65rem;margin-right:3px"></i>Joined ${joinTime}</div>` : ""}
-        </div>
-      </div>
-    `);
+              <div class="online-user">
+                <div class="online-dot"></div>
+                <div style="min-width:0">
+                  <div class="${cls}">${escHtml(u.handle)}${youLabel}</div>
+                  ${joinTime ? `<div class="online-joined"><i class="fa-regular fa-clock" style="font-size:0.62rem;margin-right:2px"></i>${joinTime}</div>` : ""}
+                </div>
+              </div>
+            `);
           });
       }
 
-      /* ══════════════════════════════════════
-   PASSWORD CHANGE
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         PASSWORD CHANGE
+         ════════════════════════════════════ */
       function openPasswordModal() {
         $("#cp-current, #cp-new, #cp-confirm").val("");
         $("#modal-alert").removeClass("show");
@@ -2766,7 +3111,7 @@
               );
             $("#cp-current, #cp-new, #cp-confirm").val("");
             setTimeout(() => $("#password-modal").removeClass("open"), 1800);
-          } else
+          } else {
             alertEl
               .attr("class", "alert-custom error show")
               .html(
@@ -2774,6 +3119,7 @@
                   (data.error || "Error.") +
                   "</span>",
               );
+          }
         } catch (e) {
           alertEl
             .attr("class", "alert-custom error show")
@@ -2786,9 +3132,9 @@
         }
       }
 
-      /* ══════════════════════════════════════
-   MOBILE SIDEBAR
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         MOBILE SIDEBAR
+         ════════════════════════════════════ */
       function toggleSidebar() {
         $("#sidebar").toggleClass("open");
         $("#sidebar-overlay").toggleClass("open");
@@ -2798,9 +3144,9 @@
         $("#sidebar-overlay").removeClass("open");
       }
 
-      /* ══════════════════════════════════════
-   TOAST
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         TOAST
+         ════════════════════════════════════ */
       function showToast(msg, type = "info") {
         const icons = {
           success: "fa-circle-check",
@@ -2814,7 +3160,7 @@
         };
         const id = "toast-" + Date.now();
         const el = $(
-          `<div class="toast-item" id="${id}"><i class="fa-solid ${icons[type] || "fa-circle-info"}" style="color:${colors[type] || colors.info};font-size:0.95rem;flex-shrink:0"></i><span>${escHtml(msg)}</span></div>`,
+          `<div class="toast-item" id="${id}"><i class="fa-solid ${icons[type] || "fa-circle-info"}" style="color:${colors[type] || colors.info};font-size:0.9rem;flex-shrink:0"></i><span>${escHtml(msg)}</span></div>`,
         );
         $("#toast-container").append(el);
         setTimeout(() => {
@@ -2823,9 +3169,9 @@
         }, 3500);
       }
 
-      /* ══════════════════════════════════════
-   UTILS
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         UTILS
+         ════════════════════════════════════ */
       function escHtml(str) {
         return String(str)
           .replace(/&/g, "&amp;")
@@ -2841,9 +3187,9 @@
           .substring(0, 60);
       }
 
-      /* ══════════════════════════════════════
-   KEYBOARD SHORTCUTS
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         KEYBOARD SHORTCUTS
+         ════════════════════════════════════ */
       $(document).on("keydown", function (e) {
         if (e.key === "Escape") {
           $("#password-modal").removeClass("open");
@@ -2864,7 +3210,6 @@
         }
       });
 
-      // Close emoji picker on outside click
       $(document).on("click", function (e) {
         if (activeEmojiPicker !== null) {
           const picker = document.getElementById(
@@ -2874,49 +3219,32 @@
         }
       });
 
-      // Handle browser back/forward
       window.addEventListener("popstate", function (e) {
         if (!session) {
           showView("view-auth");
           return;
         }
         const pathView = getPathView();
-        if (pathView === "admin" && session.isAdmin) {
-          enterAdminView();
-        } else if (pathView === "chat") {
-          enterChatView();
-        } else {
-          showView("view-auth");
-        }
+        if (pathView === "admin" && session.isAdmin) enterAdminView();
+        else if (pathView === "chat") enterChatView();
+        else showView("view-auth");
       });
 
-      /* ══════════════════════════════════════
-   INIT — restore session on page load
-══════════════════════════════════════ */
+      /* ════════════════════════════════════
+         INIT
+         ════════════════════════════════════ */
       $(document).ready(function () {
-        // Apply saved theme
         const savedTheme = sessionStorage.getItem("nc_theme") || "dark";
         applyTheme(savedTheme);
 
-        // Try to restore session (tab-scoped via sessionStorage)
         const saved = loadSavedSession();
         if (saved && saved.token) {
           session = saved;
           const pathView = getPathView();
-          if (pathView === "admin" && session.isAdmin) {
-            enterAdminView();
-          } else if (pathView === "chat") {
-            enterChatView();
-          } else if (pathView === "auth") {
-            if (session.isAdmin) {
-              enterAdminView();
-            } else {
-              enterChatView();
-            }
-          } else {
-            showView("view-auth");
-            $("#login-handle").focus();
-          }
+          if (pathView === "admin" && session.isAdmin) enterAdminView();
+          else if (pathView === "chat") enterChatView();
+          else if (session.isAdmin) enterAdminView();
+          else enterChatView();
         } else {
           showView("view-auth");
           $("#login-handle").focus();
